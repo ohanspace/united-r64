@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center_vertical"
+        android:padding="16dp">
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="your name"
+            android:maxLines="1"
+            android:layout_marginBottom="16dp"
+            android:id="@+id/register_activity_nameField"/>
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/register_activity_nameField"
+            android:hint="mobile no"
+            android:id="@+id/register_activity_telephoneField"
+            android:layout_marginBottom="16dp"/>
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="password"
+            android:layout_below="@id/register_activity_telephoneField"
+            android:id="@+id/register_activity_passwordField"
+            android:inputType="textPassword"
+            android:layout_marginBottom="16dp"/>
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/register_activity_passwordField"
+            android:text="Register"
+            android:background="@color/colorPrimaryDark"
+            android:textColor="@color/colorWhite"
+            android:id="@+id/register_activity_registerBtn"/>
+        <ProgressBar
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_alignTop="@id/register_activity_registerBtn"
+            android:layout_alignBottom="@id/register_activity_registerBtn"
+            android:indeterminateOnly="true"
+            android:id="@+id/register_activity_progressBar"/>
+    </RelativeLayout>
+
+
+</LinearLayout>
