@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.annotation.LayoutRes;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.DisplayMetrics;
 
 import org.badhan.blooddonor.R;
 import org.badhan.blooddonor.view.navDrawer.NavDrawer;
@@ -12,11 +13,15 @@ public abstract class BaseActivity extends AppCompatActivity{
     public MyApplication application;
     protected Toolbar toolbar;
     protected NavDrawer navDrawer;
+    protected boolean isTablet;
 
     @Override
     protected void onCreate(Bundle savedState){
         super.onCreate(savedState);
         application = (MyApplication) getApplication();
+
+        DisplayMetrics metrics = getResources().getDisplayMetrics();
+        isTablet = (metrics.widthPixels / metrics.density) >= 600;
     }
 
     @Override
