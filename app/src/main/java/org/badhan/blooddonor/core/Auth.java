@@ -11,6 +11,7 @@ public class Auth {
     public Auth(Context context) {
         this.context = context;
         user = new User();
+        user.setDisplayName("Borhan Chowdhury");
     }
 
 

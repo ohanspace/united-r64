@@ -36,7 +36,9 @@ public class BasicNavDrawerItem extends NavDrawerItem implements View.OnClickLis
         if (container == null)
             throw new RuntimeException("Nav drawer item : "+ text + " could not be attached to ViewGroup. View not found");
 
-        view = inflater.inflate(R.layout.nav_drawer_item, container);
+        view = inflater.inflate(R.layout.nav_drawer_item, container, false);
+        container.addView(view);
+
         view.setOnClickListener(this);
 
         iconView =  view.findViewById(R.id.nav_drawer_item_icon);

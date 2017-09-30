@@ -6,6 +6,7 @@ import android.view.View;
 import android.widget.Toast;
 
 import org.badhan.blooddonor.R;
+import org.badhan.blooddonor.activity.InboxActivity;
 import org.badhan.blooddonor.activity.MainActivity;
 import org.badhan.blooddonor.activity.auth.handler.OnLoginBtnClickHandler;
 import org.badhan.blooddonor.core.BaseActivity;
@@ -80,7 +81,7 @@ public class LoginActivity extends BaseActivity {
 
 
     public void onSuccessLogin() {
-        Intent intent = new Intent(this, MainActivity.class);
+        Intent intent = new Intent(this, InboxActivity.class);
         startActivity(intent);
         Toast.makeText(this, "Login succeed",Toast.LENGTH_SHORT).show();
         finish();
