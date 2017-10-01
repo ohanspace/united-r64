@@ -2,6 +2,7 @@ package org.badhan.blooddonor.entity;
 
 public class User {
     private int id;
+    private String email;
     private Telephone telephone;
     private String displayName;
     private String profilePicUrl;
@@ -57,4 +58,11 @@ public class User {
     }
 
 
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
 }

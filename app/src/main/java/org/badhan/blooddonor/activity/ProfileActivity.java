@@ -6,7 +6,11 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.provider.MediaStore;
+import android.view.ActionMode;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
@@ -14,6 +18,7 @@ import com.soundcloud.android.crop.Crop;
 
 import org.badhan.blooddonor.R;
 import org.badhan.blooddonor.core.BaseAuthActivity;
+import org.badhan.blooddonor.entity.User;
 import org.badhan.blooddonor.view.MainNavDrawer;
 
 import java.io.File;
@@ -23,6 +28,17 @@ import java.util.List;
 
 public class ProfileActivity extends BaseAuthActivity {
     private static final int REQUEST_SELECT_AVATAR = 1;
+
+    private static final int STATE_VIEWING = 1;
+    private static final int STATE_EDITING = 2;
+
+    private static final String BUNDLE_STATE = "BUNDLE_STATE";
+
+    private int currentState;
+    private EditText displayNameField;
+    private EditText emailField;
+    private ActionMode editProfileActionMode;
+
     private ImageView avatarImage;
     private View avatarChangeAction;
     private View avatarChangeProgress;
@@ -35,10 +51,26 @@ public class ProfileActivity extends BaseAuthActivity {
 
         changeTabletLayout();
 
+        bindControls();
+
+        User user = application.getAuth().getUser();
+        getSupportActionBar().setTitle(user.getDisplayName());
+
+        if (savedState == null){
+            displayNameField.setText(user.getDisplayName());
+            emailField.setText(user.getEmail());
+            changeState(STATE_VIEWING);
+        }else
+            changeState(savedState.getInt(BUNDLE_STATE));
+
+    }
+
+    private void bindControls() {
         avatarImage = findViewById(R.id.profile_activity_avatarImage);
         avatarChangeAction = findViewById(R.id.profile_activity_avatarChangeAction);
         avatarChangeProgress = findViewById(R.id.profile_activity_avatarChangeProgressFrame);
-        tempImageFile = new File(getExternalCacheDir(), "temp_avatar.jpg");
+        displayNameField = findViewById(R.id.profile_activity_displayNameField);
+        emailField = findViewById(R.id.profile_activity_emailField);
 
         avatarChangeProgress.setVisibility(View.GONE);
 
@@ -60,14 +92,22 @@ public class ProfileActivity extends BaseAuthActivity {
         }
     }
 
+    @Override
+    public void onSaveInstanceState(Bundle savedState){
+        super.onSaveInstanceState(savedState);
+        savedState.putInt(BUNDLE_STATE, currentState);
+    }
+
     private class OnAvatarChangeClickHandler implements View.OnClickListener {
+
         @Override
         public void onClick(View view) {
             selectNewAvatar();
         }
     }
-
     private void selectNewAvatar() {
+        tempImageFile = new File(getExternalCacheDir(), "temp_avatar.jpg");
+
         List<Intent> otherImageCaptureIntents = new ArrayList<>();
         List<ResolveInfo> otherImageCaptureActivity = getPackageManager()
                 .queryIntentActivities(new Intent(MediaStore.ACTION_IMAGE_CAPTURE), 0);
@@ -92,7 +132,6 @@ public class ProfileActivity extends BaseAuthActivity {
         startActivityForResult(chooser, REQUEST_SELECT_AVATAR);
     }
 
-
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data){
         if (resultCode != RESULT_OK){
@@ -107,9 +146,8 @@ public class ProfileActivity extends BaseAuthActivity {
             avatarImage.setImageResource(0);
             avatarImage.setImageURI(Uri.fromFile(tempImageFile));
         }
-
-
     }
+
 
     private void handleSelectedImage(Intent data) {
         Uri tempImageFileUri = Uri.fromFile(this.tempImageFile);
@@ -127,4 +165,75 @@ public class ProfileActivity extends BaseAuthActivity {
                 .start(this);
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu){
+        getMenuInflater().inflate(R.menu.profile_activity_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item){
+        if (item.getItemId() == R.id.profile_activity_menu_edit){
+            changeState(STATE_EDITING);
+            return true;
+        }
+        return false;
+    }
+
+    private void changeState(int state) {
+        if (currentState == state)
+            return;
+        currentState = state;
+        if (state == STATE_VIEWING){
+            displayNameField.setEnabled(false);
+            emailField.setEnabled(false);
+            avatarChangeAction.setVisibility(View.VISIBLE);
+
+            if (editProfileActionMode != null){
+                editProfileActionMode.finish();
+                editProfileActionMode = null;
+            }
+
+        }else if (state == STATE_EDITING){
+            displayNameField.setEnabled(true);
+            emailField.setEnabled(true);
+            avatarChangeAction.setVisibility(View.GONE);
+
+            editProfileActionMode = toolbar.startActionMode(new EditProfileActionCallback());
+        }else
+            throw new IllegalArgumentException("invalid state code: "+state);
+    }
+
+    private class EditProfileActionCallback implements ActionMode.Callback {
+        @Override
+        public boolean onCreateActionMode(ActionMode actionMode, Menu menu) {
+            getMenuInflater().inflate(R.menu.profile_activity_menu_edit, menu);
+            return true;
+        }
+
+        @Override
+        public boolean onPrepareActionMode(ActionMode actionMode, Menu menu) {
+            return false;
+        }
+
+        @Override
+        public boolean onActionItemClicked(ActionMode actionMode, MenuItem menuItem) {
+            if (menuItem.getItemId() == R.id.profile_activity_menu_edit_done){
+                //TODO send request to update profile
+                User user = application.getAuth().getUser();
+                user.setDisplayName(displayNameField.getText().toString());
+                user.setEmail(emailField.getText().toString());
+
+                changeState(STATE_VIEWING);
+                return true;
+            }
+            return false;
+        }
+
+        @Override
+        public void onDestroyActionMode(ActionMode actionMode) {
+            if (currentState != STATE_VIEWING)
+                changeState(STATE_VIEWING);
+        }
+    }
 }
