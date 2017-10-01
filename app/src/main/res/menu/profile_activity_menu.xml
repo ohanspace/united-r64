@@ -5,4 +5,9 @@
         android:icon="@drawable/ic_action_edit"
         app:showAsAction="always"
         android:id="@+id/profile_activity_menu_edit"/>
+    <item
+        android:title="change password"
+        android:icon="@drawable/ic_action_lock_open"
+        app:showAsAction="always"
+        android:id="@+id/profile_activity_menu_change_password"/>
 </menu>

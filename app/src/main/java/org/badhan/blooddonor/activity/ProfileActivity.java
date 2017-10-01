@@ -1,5 +1,6 @@
 package org.badhan.blooddonor.activity;
 
+import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.content.pm.ResolveInfo;
 import android.net.Uri;
@@ -18,6 +19,7 @@ import com.soundcloud.android.crop.Crop;
 
 import org.badhan.blooddonor.R;
 import org.badhan.blooddonor.core.BaseAuthActivity;
+import org.badhan.blooddonor.dialog.ChangePasswordDialog;
 import org.badhan.blooddonor.entity.User;
 import org.badhan.blooddonor.view.MainNavDrawer;
 
@@ -177,7 +179,19 @@ public class ProfileActivity extends BaseAuthActivity {
             changeState(STATE_EDITING);
             return true;
         }
+        else if (item.getItemId() == R.id.profile_activity_menu_change_password){
+            showChangePasswordDialog();
+            return true;
+        }
         return false;
+    }
+
+    private void showChangePasswordDialog() {
+        FragmentTransaction transaction = getFragmentManager()
+                .beginTransaction()
+                .addToBackStack(null);
+        ChangePasswordDialog dialog = new ChangePasswordDialog();
+        dialog.show(transaction, null);
     }
 
     private void changeState(int state) {
