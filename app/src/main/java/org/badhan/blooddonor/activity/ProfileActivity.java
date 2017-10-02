@@ -7,20 +7,24 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.provider.MediaStore;
+import android.util.Log;
 import android.view.ActionMode;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 
 import com.soundcloud.android.crop.Crop;
+import com.squareup.otto.Subscribe;
 
 import org.badhan.blooddonor.R;
 import org.badhan.blooddonor.core.BaseAuthActivity;
 import org.badhan.blooddonor.dialog.ChangePasswordDialog;
 import org.badhan.blooddonor.entity.User;
+import org.badhan.blooddonor.service.AccountService;
 import org.badhan.blooddonor.view.MainNavDrawer;
 
 import java.io.File;
@@ -35,6 +39,7 @@ public class ProfileActivity extends BaseAuthActivity {
     private static final int STATE_EDITING = 2;
 
     private static final String BUNDLE_STATE = "BUNDLE_STATE";
+    private static boolean isProgressBarVisible;
 
     private int currentState;
     private EditText displayNameField;
@@ -45,6 +50,9 @@ public class ProfileActivity extends BaseAuthActivity {
     private View avatarChangeAction;
     private View avatarChangeProgress;
     private File tempImageFile;
+
+    private ProgressBar profileUpdatingProgressBar;
+
     @Override
     protected void onAppCreate(Bundle savedState) {
         setContentView(R.layout.activity_profile);
@@ -65,16 +73,21 @@ public class ProfileActivity extends BaseAuthActivity {
         }else
             changeState(savedState.getInt(BUNDLE_STATE));
 
+        if (isProgressBarVisible)
+            showProgressBar(true);
+
     }
 
     private void bindControls() {
         avatarImage = findViewById(R.id.profile_activity_avatarImage);
         avatarChangeAction = findViewById(R.id.profile_activity_avatarChangeAction);
         avatarChangeProgress = findViewById(R.id.profile_activity_avatarChangeProgressFrame);
+        profileUpdatingProgressBar = findViewById(R.id.profile_activity_progressBar);
         displayNameField = findViewById(R.id.profile_activity_displayNameField);
         emailField = findViewById(R.id.profile_activity_emailField);
 
         avatarChangeProgress.setVisibility(View.GONE);
+        profileUpdatingProgressBar.setVisibility(ProgressBar.GONE);
 
         avatarImage.setOnClickListener(new OnAvatarChangeClickHandler());
         avatarChangeAction.setOnClickListener(new OnAvatarChangeClickHandler());
@@ -106,7 +119,9 @@ public class ProfileActivity extends BaseAuthActivity {
         public void onClick(View view) {
             selectNewAvatar();
         }
+
     }
+
     private void selectNewAvatar() {
         tempImageFile = new File(getExternalCacheDir(), "temp_avatar.jpg");
 
@@ -134,26 +149,56 @@ public class ProfileActivity extends BaseAuthActivity {
         startActivityForResult(chooser, REQUEST_SELECT_AVATAR);
     }
 
+
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data){
         if (resultCode != RESULT_OK){
             tempImageFile.delete();
             return;
         }
-
         if (requestCode == REQUEST_SELECT_AVATAR){
             handleSelectedImage(data);
-        }else if (requestCode == Crop.REQUEST_CROP){
-            //TODO send cropped image to server for persistence
-            avatarImage.setImageResource(0);
-            avatarImage.setImageURI(Uri.fromFile(tempImageFile));
+        }
+        else if (requestCode == Crop.REQUEST_CROP){
+            avatarChangeProgress.setVisibility(View.VISIBLE);
+            bus.post(new AccountService.AvatarChangeRequest(Uri.fromFile(tempImageFile)));
+           // avatarImage.setImageResource(0);
+            //avatarImage.setImageURI(Uri.fromFile(tempImageFile));
         }
     }
+    @Subscribe
+    public void onAvatarUpdated(AccountService.AvatarChangeResponse response){
+        avatarChangeProgress.setVisibility(View.GONE);
+        //todo handle error
+        if (!response.succeed())
+            response.showErrorToast(this);
+    }
 
+    @Subscribe
+    public void onProfileUpdated(AccountService.ProfileUpdateResponse response){
+        if (!response.succeed()){
+            response.showErrorToast(this);
+            changeState(STATE_EDITING);
+        }
+        displayNameField.setError(response.getPropertyError("displayName"));
+        emailField.setError(response.getPropertyError("email"));
+        showProgressBar(false);
+    }
+
+    private void showProgressBar(boolean visible) {
+        if (visible){
+            profileUpdatingProgressBar.setVisibility(ProgressBar.VISIBLE);
+        }
+        else
+            profileUpdatingProgressBar.setVisibility(ProgressBar.GONE);
+
+        isProgressBarVisible = visible; //important if activity recreated
+    }
 
     private void handleSelectedImage(Intent data) {
         Uri tempImageFileUri = Uri.fromFile(this.tempImageFile);
         Uri selectedImageFileUri;
+        //TODO selection from gallery not working in actual phone
         if (data != null && data.getData() != null){
             //chosen from gallery
             selectedImageFileUri = data.getData();
@@ -166,6 +211,7 @@ public class ProfileActivity extends BaseAuthActivity {
                 .asSquare()
                 .start(this);
     }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu){
@@ -219,12 +265,12 @@ public class ProfileActivity extends BaseAuthActivity {
     }
 
     private class EditProfileActionCallback implements ActionMode.Callback {
+
         @Override
         public boolean onCreateActionMode(ActionMode actionMode, Menu menu) {
             getMenuInflater().inflate(R.menu.profile_activity_menu_edit, menu);
             return true;
         }
-
         @Override
         public boolean onPrepareActionMode(ActionMode actionMode, Menu menu) {
             return false;
@@ -233,10 +279,13 @@ public class ProfileActivity extends BaseAuthActivity {
         @Override
         public boolean onActionItemClicked(ActionMode actionMode, MenuItem menuItem) {
             if (menuItem.getItemId() == R.id.profile_activity_menu_edit_done){
-                //TODO send request to update profile
-                User user = application.getAuth().getUser();
-                user.setDisplayName(displayNameField.getText().toString());
-                user.setEmail(emailField.getText().toString());
+                showProgressBar(true);
+                changeState(STATE_VIEWING);
+
+                AccountService.ProfileUpdateRequest request =
+                        new AccountService.ProfileUpdateRequest(displayNameField.getText().toString(),
+                                emailField.getText().toString());
+                bus.post(request);
 
                 changeState(STATE_VIEWING);
                 return true;
@@ -249,5 +298,7 @@ public class ProfileActivity extends BaseAuthActivity {
             if (currentState != STATE_VIEWING)
                 changeState(STATE_VIEWING);
         }
+
     }
+   
 }

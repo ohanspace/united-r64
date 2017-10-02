@@ -66,4 +66,15 @@
             android:lines="1"
             android:id="@+id/profile_activity_emailField"/>
     </LinearLayout>
+
+
+        <ProgressBar
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:id="@+id/profile_activity_progressBar"
+            android:indeterminate="true"
+            android:visibility="visible"
+            android:layout_centerInParent="true"/>
+
 </RelativeLayout>

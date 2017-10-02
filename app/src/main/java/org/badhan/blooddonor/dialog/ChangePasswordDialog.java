@@ -5,15 +5,21 @@ import android.app.Dialog;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import com.squareup.otto.Subscribe;
+
 import org.badhan.blooddonor.R;
+import org.badhan.blooddonor.core.BaseDialogFragment;
+import org.badhan.blooddonor.service.AccountService;
 
 public class ChangePasswordDialog extends BaseDialogFragment {
     private View dialogView;
     private EditText currentPasswordField;
     private EditText newPasswordField;
     private EditText confirmNewPasswordField;
+    private ProgressBar progressBar;
 
     @Override
     public Dialog onCreateDialog(Bundle savedState){
@@ -43,9 +49,31 @@ public class ChangePasswordDialog extends BaseDialogFragment {
     private class OnClickPasswordUpdateBtn implements View.OnClickListener {
         @Override
         public void onClick(View view) {
-            //TODO send new password to persistence server
-            Toast.makeText(getActivity(), "password updated!", Toast.LENGTH_SHORT).show();
-            dismiss();
+            progressBar = new ProgressBar(getActivity(), null, android.R.attr.progressBarStyleSmall);
+            progressBar.setVisibility(ProgressBar.VISIBLE);
+
+            bus.post(new AccountService.PasswordChangeRequest(
+                    currentPasswordField.getText().toString(),
+                    newPasswordField.getText().toString(),
+                    confirmNewPasswordField.getText().toString()
+            ));
         }
+    }
+
+
+    @Subscribe
+    public void onPasswordChanged(AccountService.PasswordChangeResponse response){
+        if (response.succeed()){
+            Toast.makeText(getActivity(), "Password updated", Toast.LENGTH_LONG).show();
+            dismiss();
+            application.getAuth().getUser().setHasPassword(true);
+            return;
+        }
+
+        currentPasswordField.setError(response.getPropertyError("currentPassword"));
+        newPasswordField.setError(response.getPropertyError("newPassword"));
+        confirmNewPasswordField.setError(response.getPropertyError("confirmNewPassword"));
+
+        response.showErrorToast(getActivity());
     }
 }

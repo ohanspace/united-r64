@@ -6,6 +6,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.DisplayMetrics;
 
+import com.squareup.otto.Bus;
+
 import org.badhan.blooddonor.R;
 import org.badhan.blooddonor.view.navDrawer.NavDrawer;
 
@@ -14,14 +16,24 @@ public abstract class BaseActivity extends AppCompatActivity{
     protected Toolbar toolbar;
     protected NavDrawer navDrawer;
     protected boolean isTablet;
+    protected Bus bus;
 
     @Override
     protected void onCreate(Bundle savedState){
         super.onCreate(savedState);
         application = (MyApplication) getApplication();
+        bus = application.getBus();
 
         DisplayMetrics metrics = getResources().getDisplayMetrics();
         isTablet = (metrics.widthPixels / metrics.density) >= 600;
+
+        bus.register(this);
+    }
+
+    @Override
+    protected void onDestroy(){
+        super.onDestroy();
+        bus.unregister(this);
     }
 
     @Override
