@@ -2,10 +2,11 @@ package org.badhan.blooddonor.entity;
 
 public class User {
     private int id;
+    private String username;
     private String email;
     private Telephone telephone;
     private String displayName;
-    private String profilePicUrl;
+    private String avatarUrl;
     private boolean isLoggedIn;
     private boolean hasPassword;
 
@@ -25,12 +26,12 @@ public class User {
         this.telephone = telephone;
     }
 
-    public String getProfilePicUrl() {
-        return profilePicUrl;
+    public String getAvatarUrl() {
+        return avatarUrl;
     }
 
-    public void setProfilePicUrl(String profilePicUrl) {
-        this.profilePicUrl = profilePicUrl;
+    public void setAvatarUrl(String avatarUrl) {
+        this.avatarUrl = avatarUrl;
     }
 
     public boolean isLoggedIn() {
@@ -64,5 +65,13 @@ public class User {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
     }
 }

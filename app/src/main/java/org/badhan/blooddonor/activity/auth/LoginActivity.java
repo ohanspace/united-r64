@@ -3,7 +3,10 @@ package org.badhan.blooddonor.activity.auth;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.Toast;
+
+import com.squareup.otto.Subscribe;
 
 import org.badhan.blooddonor.R;
 import org.badhan.blooddonor.activity.InboxActivity;
@@ -12,6 +15,7 @@ import org.badhan.blooddonor.activity.ProfileActivity;
 import org.badhan.blooddonor.activity.auth.handler.OnLoginBtnClickHandler;
 import org.badhan.blooddonor.core.BaseActivity;
 import org.badhan.blooddonor.core.Constants;
+import org.badhan.blooddonor.service.auth.LoginWithUsername;
 
 
 public class LoginActivity extends BaseActivity {
@@ -22,6 +26,8 @@ public class LoginActivity extends BaseActivity {
     private View registerBtn;
     private View facebookLoginBtn;
     private View googleLoginBtn;
+    public EditText usernameField;
+    public EditText passwordField;
 
     @Override
     protected void onCreate(Bundle savedState){
@@ -36,6 +42,9 @@ public class LoginActivity extends BaseActivity {
         registerBtn = findViewById(R.id.login_activity_registerBtn);
         facebookLoginBtn = findViewById(R.id.login_activity_facebookLoginBtn);
         googleLoginBtn = findViewById(R.id.login_activity_googleLoginBtn);
+        usernameField = findViewById(R.id.login_activity_usernameField);
+        passwordField = findViewById(R.id.login_activity_passwordField);
+
 
         loginBtn.setOnClickListener(new OnLoginBtnClickHandler(this));
         registerBtn.setOnClickListener(new OnRegisterBtnClickHandler());
@@ -82,9 +91,19 @@ public class LoginActivity extends BaseActivity {
 
 
     public void onSuccessLogin() {
+        application.getAuth().getUser().setLoggedIn(true);
         Intent intent = new Intent(this, ProfileActivity.class);
         startActivity(intent);
         Toast.makeText(this, "Login succeed",Toast.LENGTH_SHORT).show();
         finish();
+    }
+
+    @Subscribe
+    public void onLoginWithUsername(LoginWithUsername.Response response){
+        if (response.succeed())
+            onSuccessLogin();
+
+        usernameField.setError(response.getPropertyError("username"));
+        passwordField.setError(response.getPropertyError("password"));
     }
 }

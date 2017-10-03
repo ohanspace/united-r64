@@ -17,8 +17,8 @@
     <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="mobile no"
-        android:id="@+id/login_activity_telephoneField"/>
+        android:hint="username"
+        android:id="@+id/login_activity_usernameField"/>
     <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

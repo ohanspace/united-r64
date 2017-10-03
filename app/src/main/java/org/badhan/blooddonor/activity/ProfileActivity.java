@@ -7,7 +7,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.provider.MediaStore;
-import android.util.Log;
 import android.view.ActionMode;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -24,7 +23,8 @@ import org.badhan.blooddonor.R;
 import org.badhan.blooddonor.core.BaseAuthActivity;
 import org.badhan.blooddonor.dialog.ChangePasswordDialog;
 import org.badhan.blooddonor.entity.User;
-import org.badhan.blooddonor.service.AccountService;
+import org.badhan.blooddonor.service.profile.ChangeAvatar;
+import org.badhan.blooddonor.service.profile.UpdateProfile;
 import org.badhan.blooddonor.view.MainNavDrawer;
 
 import java.io.File;
@@ -161,13 +161,13 @@ public class ProfileActivity extends BaseAuthActivity {
         }
         else if (requestCode == Crop.REQUEST_CROP){
             avatarChangeProgress.setVisibility(View.VISIBLE);
-            bus.post(new AccountService.AvatarChangeRequest(Uri.fromFile(tempImageFile)));
+            bus.post(new ChangeAvatar.Request(Uri.fromFile(tempImageFile)));
            // avatarImage.setImageResource(0);
             //avatarImage.setImageURI(Uri.fromFile(tempImageFile));
         }
     }
     @Subscribe
-    public void onAvatarUpdated(AccountService.AvatarChangeResponse response){
+    public void onAvatarUpdated(ChangeAvatar.Response response){
         avatarChangeProgress.setVisibility(View.GONE);
         //todo handle error
         if (!response.succeed())
@@ -175,7 +175,7 @@ public class ProfileActivity extends BaseAuthActivity {
     }
 
     @Subscribe
-    public void onProfileUpdated(AccountService.ProfileUpdateResponse response){
+    public void onProfileUpdated(UpdateProfile.Response response){
         if (!response.succeed()){
             response.showErrorToast(this);
             changeState(STATE_EDITING);
@@ -282,8 +282,8 @@ public class ProfileActivity extends BaseAuthActivity {
                 showProgressBar(true);
                 changeState(STATE_VIEWING);
 
-                AccountService.ProfileUpdateRequest request =
-                        new AccountService.ProfileUpdateRequest(displayNameField.getText().toString(),
+                UpdateProfile.Request request =
+                        new UpdateProfile.Request(displayNameField.getText().toString(),
                                 emailField.getText().toString());
                 bus.post(request);
 

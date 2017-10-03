@@ -16,7 +16,7 @@ public abstract class BaseActivity extends AppCompatActivity{
     protected Toolbar toolbar;
     protected NavDrawer navDrawer;
     protected boolean isTablet;
-    protected Bus bus;
+    public Bus bus;
 
     @Override
     protected void onCreate(Bundle savedState){

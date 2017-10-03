@@ -12,7 +12,7 @@ import com.squareup.otto.Subscribe;
 
 import org.badhan.blooddonor.R;
 import org.badhan.blooddonor.core.BaseDialogFragment;
-import org.badhan.blooddonor.service.AccountService;
+import org.badhan.blooddonor.service.profile.ChangePassword;
 
 public class ChangePasswordDialog extends BaseDialogFragment {
     private View dialogView;
@@ -52,7 +52,7 @@ public class ChangePasswordDialog extends BaseDialogFragment {
             progressBar = new ProgressBar(getActivity(), null, android.R.attr.progressBarStyleSmall);
             progressBar.setVisibility(ProgressBar.VISIBLE);
 
-            bus.post(new AccountService.PasswordChangeRequest(
+            bus.post(new ChangePassword.Request(
                     currentPasswordField.getText().toString(),
                     newPasswordField.getText().toString(),
                     confirmNewPasswordField.getText().toString()
@@ -62,7 +62,7 @@ public class ChangePasswordDialog extends BaseDialogFragment {
 
 
     @Subscribe
-    public void onPasswordChanged(AccountService.PasswordChangeResponse response){
+    public void onPasswordChanged(ChangePassword.Response response){
         if (response.succeed()){
             Toast.makeText(getActivity(), "Password updated", Toast.LENGTH_LONG).show();
             dismiss();
