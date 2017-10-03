@@ -37,6 +37,8 @@ public class NavDrawer {
                 setOpen(!isOpen());
             }
         });
+
+        activity.getMyApplication().getBus().register(this); //register to bus
     }
 
     public void addItem(NavDrawerItem item){
@@ -72,4 +74,7 @@ public class NavDrawer {
     }
 
 
+    public void destroy() {
+        activity.getMyApplication().getBus().unregister(this);
+    }
 }

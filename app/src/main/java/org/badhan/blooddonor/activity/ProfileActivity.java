@@ -25,6 +25,7 @@ import org.badhan.blooddonor.dialog.ChangePasswordDialog;
 import org.badhan.blooddonor.entity.User;
 import org.badhan.blooddonor.service.profile.ChangeAvatar;
 import org.badhan.blooddonor.service.profile.UpdateProfile;
+import org.badhan.blooddonor.service.profile.UserDetailsUpdatedEvent;
 import org.badhan.blooddonor.view.MainNavDrawer;
 
 import java.io.File;
@@ -299,6 +300,12 @@ public class ProfileActivity extends BaseAuthActivity {
                 changeState(STATE_VIEWING);
         }
 
+    }
+
+
+    @Subscribe
+    public void onUserDetailsUpdated(UserDetailsUpdatedEvent event){
+        getSupportActionBar().setTitle(event.user.getDisplayName());
     }
    
 }

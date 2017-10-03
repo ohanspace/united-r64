@@ -5,6 +5,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.squareup.otto.Subscribe;
+
 import org.badhan.blooddonor.R;
 import org.badhan.blooddonor.activity.ContactsActivity;
 import org.badhan.blooddonor.activity.InboxActivity;
@@ -13,6 +15,7 @@ import org.badhan.blooddonor.activity.ProfileActivity;
 import org.badhan.blooddonor.activity.SentMessagesActivity;
 import org.badhan.blooddonor.core.BaseActivity;
 import org.badhan.blooddonor.entity.User;
+import org.badhan.blooddonor.service.profile.UserDetailsUpdatedEvent;
 import org.badhan.blooddonor.view.navDrawer.ActivityNavDrawerItem;
 import org.badhan.blooddonor.view.navDrawer.BasicNavDrawerItem;
 import org.badhan.blooddonor.view.navDrawer.NavDrawer;
@@ -46,5 +49,13 @@ public class MainNavDrawer extends NavDrawer {
         User loggedInUser = activity.getMyApplication().getAuth().getUser();
         displayNameView.setText(loggedInUser.getDisplayName());
         //TODO set avatarImageView src to user
+    }
+
+
+    @Subscribe
+    public void onUserDetailsUpdated(UserDetailsUpdatedEvent event){
+        //todo update avatar img
+        User user = event.user;
+        displayNameView.setText(user.getDisplayName());
     }
 }
