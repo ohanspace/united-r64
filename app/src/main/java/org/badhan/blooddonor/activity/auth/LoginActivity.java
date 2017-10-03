@@ -4,13 +4,13 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.FrameLayout;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.squareup.otto.Subscribe;
 
 import org.badhan.blooddonor.R;
-import org.badhan.blooddonor.activity.InboxActivity;
-import org.badhan.blooddonor.activity.MainActivity;
 import org.badhan.blooddonor.activity.ProfileActivity;
 import org.badhan.blooddonor.activity.auth.handler.OnLoginBtnClickHandler;
 import org.badhan.blooddonor.core.BaseActivity;
@@ -28,6 +28,7 @@ public class LoginActivity extends BaseActivity {
     private View googleLoginBtn;
     public EditText usernameField;
     public EditText passwordField;
+    public FrameLayout progressBarFrame;
 
     @Override
     protected void onCreate(Bundle savedState){
@@ -44,7 +45,7 @@ public class LoginActivity extends BaseActivity {
         googleLoginBtn = findViewById(R.id.login_activity_googleLoginBtn);
         usernameField = findViewById(R.id.login_activity_usernameField);
         passwordField = findViewById(R.id.login_activity_passwordField);
-
+        progressBarFrame = findViewById(R.id.login_activity_progressBarFrame);
 
         loginBtn.setOnClickListener(new OnLoginBtnClickHandler(this));
         registerBtn.setOnClickListener(new OnRegisterBtnClickHandler());
@@ -105,5 +106,7 @@ public class LoginActivity extends BaseActivity {
 
         usernameField.setError(response.getPropertyError("username"));
         passwordField.setError(response.getPropertyError("password"));
+
+        progressBarFrame.setVisibility(FrameLayout.GONE);
     }
 }
