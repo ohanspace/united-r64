@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.FrameLayout;
-import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.squareup.otto.Subscribe;
@@ -28,7 +27,7 @@ public class LoginActivity extends BaseActivity {
     private View googleLoginBtn;
     public EditText usernameField;
     public EditText passwordField;
-    public FrameLayout progressBarFrame;
+    public View progressBarFrame;
 
     @Override
     protected void onCreate(Bundle savedState){
