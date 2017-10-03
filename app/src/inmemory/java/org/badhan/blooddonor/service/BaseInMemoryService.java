@@ -22,7 +22,7 @@ public abstract class BaseInMemoryService {
         bus.register(this);
     }
 
-    private void invokeDelayed(Runnable runnable, long mSecondMin, long mSecondMax){
+    public void invokeDelayed(Runnable runnable, long mSecondMin, long mSecondMax){
         if (mSecondMin > mSecondMax)
             throw new IllegalArgumentException("min must be smaller then max");
 
