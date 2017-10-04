@@ -3,6 +3,7 @@ package org.badhan.blooddonor.core;
 import android.content.Intent;
 import android.os.Bundle;
 
+import org.badhan.blooddonor.activity.auth.LocalTokenAuthenticationActivity;
 import org.badhan.blooddonor.activity.auth.LoginActivity;
 
 public abstract class BaseAuthActivity extends BaseActivity {
@@ -12,7 +13,13 @@ public abstract class BaseAuthActivity extends BaseActivity {
         super.onCreate(savedState);
 
         if(!application.getAuth().getUser().isLoggedIn()){
-            Intent intent = new Intent(this, LoginActivity.class);
+            Intent intent;
+            if (application.getAuth().hasAuthToken()){
+                intent = new Intent(this, LocalTokenAuthenticationActivity.class);
+                intent.putExtra(LocalTokenAuthenticationActivity.EXTRA_REDIRECT_TO_ACTIVITY, getClass().getName());
+            }else
+                intent = new Intent(this, LoginActivity.class);
+
             startActivity(intent);
             finish();
             return;
