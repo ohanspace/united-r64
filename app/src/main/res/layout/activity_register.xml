@@ -16,19 +16,19 @@
             android:hint="your name"
             android:maxLines="1"
             android:layout_marginBottom="16dp"
-            android:id="@+id/register_activity_nameField"/>
+            android:id="@+id/register_activity_displayNameField"/>
         <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/register_activity_nameField"
+            android:layout_below="@id/register_activity_displayNameField"
             android:hint="mobile no"
-            android:id="@+id/register_activity_telephoneField"
+            android:id="@+id/register_activity_emailField"
             android:layout_marginBottom="16dp"/>
         <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="password"
-            android:layout_below="@id/register_activity_telephoneField"
+            android:layout_below="@id/register_activity_emailField"
             android:id="@+id/register_activity_passwordField"
             android:inputType="textPassword"
             android:layout_marginBottom="16dp"/>
@@ -47,7 +47,9 @@
             android:layout_alignTop="@id/register_activity_registerBtn"
             android:layout_alignBottom="@id/register_activity_registerBtn"
             android:indeterminateOnly="true"
-            android:id="@+id/register_activity_progressBar"/>
+            android:id="@+id/register_activity_progressBar"
+            style="?android:attr/progressBarStyleInverse"
+            android:visibility="gone"/>
     </RelativeLayout>
 
 

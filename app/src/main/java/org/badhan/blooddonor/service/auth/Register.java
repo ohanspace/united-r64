@@ -9,6 +9,12 @@ public final class Register {
         public String displayName;
         public String email;
         public String password;
+
+        public Request(String displayName, String email, String password) {
+            this.displayName = displayName;
+            this.email = email;
+            this.password = password;
+        }
     }
 
     public static class Response extends LoginResponse{

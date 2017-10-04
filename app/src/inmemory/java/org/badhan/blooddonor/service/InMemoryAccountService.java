@@ -73,6 +73,8 @@ public class InMemoryAccountService extends BaseInMemoryService {
         invokeDelayed(new Runnable() {
             @Override
             public void run() {
+                if (request.username.equals("borhan"))
+                    response.setPropertyError("username","username should not borhan");
                 loginUser(response);
                 bus.post(response);
             }
