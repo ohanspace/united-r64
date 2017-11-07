@@ -5,5 +5,6 @@ import org.badhan.blooddonor.core.MyApplication;
 public class Module {
     public static void register(MyApplication application){
         new InMemoryAccountService(application);
+        new InMemoryContactService(application);
     }
 }
