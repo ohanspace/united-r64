@@ -17,17 +17,36 @@ public abstract class BaseActivity extends AppCompatActivity{
     protected NavDrawer navDrawer;
     protected boolean isTablet;
     public Bus bus;
+    protected ActionScheduler scheduler;
 
     @Override
     protected void onCreate(Bundle savedState){
         super.onCreate(savedState);
         application = (MyApplication) getApplication();
         bus = application.getBus();
+        scheduler = new ActionScheduler(application);
 
         DisplayMetrics metrics = getResources().getDisplayMetrics();
         isTablet = (metrics.widthPixels / metrics.density) >= 600;
 
         bus.register(this);
+    }
+
+
+    public ActionScheduler getScheduler(){
+        return scheduler;
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        scheduler.onResume();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        scheduler.onPause();
     }
 
     @Override

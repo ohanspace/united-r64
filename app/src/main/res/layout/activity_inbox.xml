@@ -10,7 +10,7 @@
 
         <include layout="@layout/include_toolbar_main"/>
 
-        <include layout="@layout/include_content_contacts"/>
+        <include layout="@layout/include_content_inbox"/>
     </LinearLayout>
 
     <include layout="@layout/include_main_nav_drawer"/>

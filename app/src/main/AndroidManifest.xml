@@ -26,7 +26,7 @@
         <activity android:name=".activity.auth.LocalTokenAuthenticationActivity"/>
         <activity android:name=".activity.ProfileActivity"/>
         <activity android:name=".activity.SentMessagesActivity"/>
-        <activity android:name=".activity.ContactsActivity"/>
+        <activity android:name=".activity.contact.ContactsActivity"/>
         <activity android:name=".activity.InboxActivity"/>
 
         <activity android:name="com.soundcloud.android.crop.CropImageActivity" />

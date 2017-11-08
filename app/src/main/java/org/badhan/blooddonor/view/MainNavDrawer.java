@@ -3,12 +3,11 @@ package org.badhan.blooddonor.view;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.squareup.otto.Subscribe;
 
 import org.badhan.blooddonor.R;
-import org.badhan.blooddonor.activity.ContactsActivity;
+import org.badhan.blooddonor.activity.contact.ContactsActivity;
 import org.badhan.blooddonor.activity.InboxActivity;
 import org.badhan.blooddonor.activity.MainActivity;
 import org.badhan.blooddonor.activity.ProfileActivity;

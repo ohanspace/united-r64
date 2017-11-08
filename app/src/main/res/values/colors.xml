@@ -5,4 +5,5 @@
     <color name="colorAccent">#FF4081</color>
     <color name="colorWhite">#FFFFFF</color>
     <color name="nav_drawer_item_selected_text_color">#2193F3</color>
+    <color name="pending_contact_requests">#607D8B</color>
 </resources>

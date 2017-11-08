@@ -9,6 +9,7 @@ import com.squareup.otto.Bus;
 public abstract class BaseFragment extends Fragment {
     protected MyApplication application;
     protected Bus bus;
+    protected ActionScheduler scheduler;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -16,7 +17,24 @@ public abstract class BaseFragment extends Fragment {
 
         application = (MyApplication) getActivity().getApplication();
         bus = application.getBus();
+        scheduler = new ActionScheduler(application);
         bus.register(this);
+    }
+
+    public ActionScheduler getScheduler(){
+        return scheduler;
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        scheduler.onPause();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        scheduler.onResume();
     }
 
     @Override
