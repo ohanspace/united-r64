@@ -34,10 +34,19 @@ public abstract class BaseActivity extends AppCompatActivity{
     }
 
     private void registerToBus() {
-        bus.register(this);
-        isRegisteredToBus = true;
+        if (!isRegisteredToBus){
+            bus.register(this);
+            isRegisteredToBus = true;
+        }
     }
 
+
+    private void unregisterFromBus() {
+        if (isRegisteredToBus){
+            bus.unregister(this);
+            isRegisteredToBus = false;
+        }
+    }
 
     public ActionScheduler getScheduler(){
         return scheduler;
@@ -59,7 +68,7 @@ public abstract class BaseActivity extends AppCompatActivity{
     protected void onDestroy(){
         super.onDestroy();
         unregisterFromBus();
-        
+
         if (navDrawer != null)
             this.navDrawer.destroy();
     }
@@ -67,14 +76,7 @@ public abstract class BaseActivity extends AppCompatActivity{
     @Override
     public void finish() {
         super.finish();
-        if (isRegisteredToBus){
-            unregisterFromBus();
-        }
-    }
-
-    private void unregisterFromBus() {
-        bus.unregister(this);
-        isRegisteredToBus = false;
+        unregisterFromBus();
     }
 
     @Override
