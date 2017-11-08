@@ -32,9 +32,11 @@ public class ContactsActivity extends BaseAuthActivity {
         adapter = new ArrayAdapter<ContactsSpinnerItem>(this, R.layout.toolbar_spinner_list_item);
         adapter.setDropDownViewResource(android.R.layout.simple_list_item_1);
         adapter.add(new ContactsSpinnerItem("Contacts",
-                Color.parseColor("#00BCD4"), ContactsFragment.class));
+                Color.parseColor("#00BCD4"),
+                ContactsFragment.class));
         adapter.add(new ContactsSpinnerItem("Pending Contact Requests",
-                getResources().getColor(R.color.pending_contact_requests), PendingContactRequestsFragment.class));
+                getResources().getColor(R.color.pending_contact_requests),
+                PendingContactRequestsFragment.class));
 
 
         Spinner spinner = findViewById(R.id.contacts_activity_toolbar_spinner);

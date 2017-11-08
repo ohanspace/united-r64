@@ -12,6 +12,7 @@ import org.badhan.blooddonor.R;
 import org.badhan.blooddonor.view.navDrawer.NavDrawer;
 
 public abstract class BaseActivity extends AppCompatActivity{
+    protected boolean isRegisteredToBus;
     public MyApplication application;
     protected Toolbar toolbar;
     protected NavDrawer navDrawer;
@@ -29,7 +30,12 @@ public abstract class BaseActivity extends AppCompatActivity{
         DisplayMetrics metrics = getResources().getDisplayMetrics();
         isTablet = (metrics.widthPixels / metrics.density) >= 600;
 
+        registerToBus();
+    }
+
+    private void registerToBus() {
         bus.register(this);
+        isRegisteredToBus = true;
     }
 
 
@@ -52,10 +58,23 @@ public abstract class BaseActivity extends AppCompatActivity{
     @Override
     protected void onDestroy(){
         super.onDestroy();
-        bus.unregister(this);
+        unregisterFromBus();
         
         if (navDrawer != null)
             this.navDrawer.destroy();
+    }
+
+    @Override
+    public void finish() {
+        super.finish();
+        if (isRegisteredToBus){
+            unregisterFromBus();
+        }
+    }
+
+    private void unregisterFromBus() {
+        bus.unregister(this);
+        isRegisteredToBus = false;
     }
 
     @Override
