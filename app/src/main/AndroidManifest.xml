@@ -27,7 +27,8 @@
         <activity android:name=".activity.auth.ExternalLoginActivity"/>
         <activity android:name=".activity.auth.LocalTokenAuthenticationActivity"/>
         <activity android:name=".activity.ProfileActivity"/>
-        <activity android:name=".activity.SentMessagesActivity"/>
+        <activity android:name=".activity.message.SentMessagesActivity"/>
+        <activity android:name=".activity.message.MessageActivity"/>
         <activity android:name=".activity.contact.ContactsActivity"/>
         <activity android:name=".activity.contact.ContactDetailsActivity"/>
         <activity android:name=".activity.contact.AddContactActivity"/>

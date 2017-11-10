@@ -6,4 +6,7 @@
     <color name="colorWhite">#FFFFFF</color>
     <color name="nav_drawer_item_selected_text_color">#2193F3</color>
     <color name="pending_contact_requests">#607D8B</color>
+    <color name="list_item_background_selected">#8C9EFE</color>
+    <color name="list_item_background_read">#eee</color>
+    <color name="list_item_background_unread">#FFF2CF</color>
 </resources>

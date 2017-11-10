@@ -11,7 +11,7 @@ import org.badhan.blooddonor.activity.contact.ContactsActivity;
 import org.badhan.blooddonor.activity.InboxActivity;
 import org.badhan.blooddonor.activity.MainActivity;
 import org.badhan.blooddonor.activity.ProfileActivity;
-import org.badhan.blooddonor.activity.SentMessagesActivity;
+import org.badhan.blooddonor.activity.message.SentMessagesActivity;
 import org.badhan.blooddonor.core.BaseActivity;
 import org.badhan.blooddonor.entity.User;
 import org.badhan.blooddonor.service.profile.UserDetailsUpdatedEvent;

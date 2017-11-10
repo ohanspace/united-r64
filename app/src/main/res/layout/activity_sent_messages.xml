@@ -10,7 +10,28 @@
 
         <include layout="@layout/include_toolbar_main"/>
 
-        <include layout="@layout/include_content_sent_messages"/>
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <android.support.v7.widget.RecyclerView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scrollbars="vertical"
+                android:id="@+id/sent_messages_activity_message_list"/>
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="#91D4FA"
+                android:clickable="true"
+                android:id="@+id/sent_messages_activity_progressBarFrame">
+                <ProgressBar
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:indeterminate="true"/>
+            </FrameLayout>
+        </FrameLayout>
     </LinearLayout>
 
     <include layout="@layout/include_main_nav_drawer"/>
