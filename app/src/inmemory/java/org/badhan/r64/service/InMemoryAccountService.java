@@ -101,18 +101,6 @@ public class InMemoryAccountService extends BaseInMemoryService {
                         bus.post(response);
                     }
                 });
-
-//        invokeDelayed(new Runnable() {
-//            @Override
-//            public void run() {
-//                if (request.email.equals("borhan"))
-//                    response.setPropertyError("email","email should not borhan");
-//                loginUser(response);
-//                bus.post(response);
-//            }
-//        }, 2000,3000);
-
-
     }
 
     @Subscribe
@@ -154,14 +142,6 @@ public class InMemoryAccountService extends BaseInMemoryService {
                         bus.post(response);
                     }
                 });
-
-//        invokeDelayed(new Runnable() {
-//            @Override
-//            public void run() {
-//                loginUser(response);
-//                bus.post(response);
-//            }
-//        },2000,3000);
     }
 
 
