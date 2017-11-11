@@ -1,5 +1,6 @@
 package org.badhan.r64.activity.auth;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -15,10 +16,11 @@ import org.badhan.r64.service.auth.RegisterWithExternalProvider;
 
 
 public class RegisterActivity extends BaseActivity {
-    private EditText displayNameField;
+    private EditText telephoneField;
     private EditText emailField;
     private EditText passwordField;
     private Button registerBtn;
+    private Button loginBtn;
     private String defaultRegisterBtnText;
     private View progressBar;
 
@@ -32,13 +34,15 @@ public class RegisterActivity extends BaseActivity {
     }
 
     private void bindControls() {
-        displayNameField = findViewById(R.id.register_activity_displayNameField);
+        telephoneField = findViewById(R.id.register_activity_telephoneField);
         emailField = findViewById(R.id.register_activity_emailField);
         passwordField = findViewById(R.id.register_activity_passwordField);
         registerBtn = findViewById(R.id.register_activity_registerBtn);
+        loginBtn = findViewById(R.id.register_activity_loginBtn);
         progressBar = findViewById(R.id.register_activity_progressBar);
 
         registerBtn.setOnClickListener(new OnRegisterBtnClickHandler());
+        loginBtn.setOnClickListener(new OnLoginBtnClickHandler());
         defaultRegisterBtnText = registerBtn.getText().toString();
     }
 
@@ -61,7 +65,7 @@ public class RegisterActivity extends BaseActivity {
             showProgressBar();
 
             bus.post(new Register.Request(
-                    displayNameField.getText().toString(),
+                    telephoneField.getText().toString(),
                     emailField.getText().toString(),
                     passwordField.getText().toString()
             ));
@@ -69,10 +73,20 @@ public class RegisterActivity extends BaseActivity {
     }
 
 
+    private class OnLoginBtnClickHandler implements View.OnClickListener {
+
+        @Override
+        public void onClick(View view) {
+            Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);
+            startActivity(intent);
+        }
+    }
+
     @Subscribe
     public void onRegisterResponse(Register.Response response){
         registerResponse(response);
     }
+
 
     @Subscribe
     public void onExternalRegisterResponse(RegisterWithExternalProvider.Response response){
@@ -90,10 +104,8 @@ public class RegisterActivity extends BaseActivity {
 
         hideProgressBar();
         response.showErrorToast(this);
-        displayNameField.setError(response.getPropertyError("displayName"));
+        telephoneField.setError(response.getPropertyError("telephone"));
         emailField.setError(response.getPropertyError("email"));
         passwordField.setError(response.getPropertyError("password"));
     }
-
-
 }

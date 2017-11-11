@@ -13,15 +13,16 @@
         <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="your name"
+            android:hint="mobile number"
             android:maxLines="1"
             android:layout_marginBottom="16dp"
-            android:id="@+id/register_activity_displayNameField"/>
+            android:inputType="phone"
+            android:id="@+id/register_activity_telephoneField"/>
         <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/register_activity_displayNameField"
-            android:hint="mobile no"
+            android:layout_below="@id/register_activity_telephoneField"
+            android:hint="email"
             android:id="@+id/register_activity_emailField"
             android:layout_marginBottom="16dp"/>
         <EditText
@@ -39,7 +40,17 @@
             android:text="Register"
             android:background="@color/colorPrimaryDark"
             android:textColor="@color/colorWhite"
-            android:id="@+id/register_activity_registerBtn"/>
+            android:id="@+id/register_activity_registerBtn"
+            android:layout_marginBottom="8dp"/>
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/register_activity_registerBtn"
+            android:text="Login"
+            android:background="@color/colorAccent"
+            android:textColor="@color/colorWhite"
+            android:id="@+id/register_activity_loginBtn"/>
         <ProgressBar
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

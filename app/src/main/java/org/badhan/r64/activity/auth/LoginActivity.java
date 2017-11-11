@@ -14,18 +14,16 @@ import org.badhan.r64.activity.ProfileActivity;
 import org.badhan.r64.activity.auth.handler.OnLoginBtnClickHandler;
 import org.badhan.r64.core.BaseActivity;
 import org.badhan.r64.core.Constants;
+import org.badhan.r64.service.auth.LoginWithEmail;
 import org.badhan.r64.service.auth.LoginWithUsername;
 
 
 public class LoginActivity extends BaseActivity {
     private static final int REQUEST_REGISTER_ACTIVITY = 1;
-    private static final int REQUEST_EXTERNAL_LOGIN_ACTIVITY = 2;
 
     private View loginBtn;
     private View registerBtn;
-    private View facebookLoginBtn;
-    private View googleLoginBtn;
-    public EditText usernameField;
+    public EditText emailField;
     public EditText passwordField;
     public View progressBarFrame;
 
@@ -40,16 +38,12 @@ public class LoginActivity extends BaseActivity {
     private void bindControls() {
         loginBtn = findViewById(R.id.login_activity_loginBtn);
         registerBtn = findViewById(R.id.login_activity_registerBtn);
-        facebookLoginBtn = findViewById(R.id.login_activity_facebookLoginBtn);
-        googleLoginBtn = findViewById(R.id.login_activity_googleLoginBtn);
-        usernameField = findViewById(R.id.login_activity_usernameField);
+        emailField = findViewById(R.id.login_activity_emailField);
         passwordField = findViewById(R.id.login_activity_passwordField);
         progressBarFrame = findViewById(R.id.login_activity_progressBarFrame);
 
         loginBtn.setOnClickListener(new OnLoginBtnClickHandler(this));
         registerBtn.setOnClickListener(new OnRegisterBtnClickHandler());
-        facebookLoginBtn.setOnClickListener(new OnExternalLoginBtnClickHandler());
-        googleLoginBtn.setOnClickListener(new OnExternalLoginBtnClickHandler());
     }
 
     private class OnRegisterBtnClickHandler implements View.OnClickListener {
@@ -60,31 +54,11 @@ public class LoginActivity extends BaseActivity {
         }
     }
 
-    private class OnExternalLoginBtnClickHandler implements View.OnClickListener {
-        @Override
-        public void onClick(View view) {
-            if (view == facebookLoginBtn)
-                startLoginActivityFor(Constants.FACEBOOK_PROVIDER_NAME);
-            else if(view == googleLoginBtn){
-                startLoginActivityFor(Constants.GOOGLE_PROVIDER_NAME);
-            }
-        }
-
-        private void startLoginActivityFor(String providerName){
-            Intent intent = new Intent(LoginActivity.this, ExternalLoginActivity.class);
-            intent.putExtra(ExternalLoginActivity.EXTRA_PROVIDER_NAME, providerName);
-
-            startActivityForResult(intent, REQUEST_EXTERNAL_LOGIN_ACTIVITY);
-        }
-    }
-
     protected void onActivityResult(int requestCode, int resultCode, Intent data){
         if (resultCode != RESULT_OK)
             return;
 
         if (requestCode == REQUEST_REGISTER_ACTIVITY)
-            onSuccessLogin();
-        else if (requestCode == REQUEST_EXTERNAL_LOGIN_ACTIVITY)
             onSuccessLogin();
 
     }
@@ -99,11 +73,11 @@ public class LoginActivity extends BaseActivity {
     }
 
     @Subscribe
-    public void onLoginWithUsername(LoginWithUsername.Response response){
+    public void onLoginWithEmail(LoginWithEmail.Response response){
         if (response.succeed())
             onSuccessLogin();
 
-        usernameField.setError(response.getPropertyError("username"));
+        emailField.setError(response.getPropertyError("email"));
         passwordField.setError(response.getPropertyError("password"));
 
         progressBarFrame.setVisibility(FrameLayout.GONE);

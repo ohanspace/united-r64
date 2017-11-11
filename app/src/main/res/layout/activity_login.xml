@@ -10,24 +10,10 @@
         android:orientation="vertical"
         android:padding="16dp"
         android:gravity="center">
-    <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/logo"
-        android:layout_gravity="center_horizontal"
-        />
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="একের রক্ত অন্যের জীবন"
-        android:layout_gravity="center"
-        android:textColor="#d20c0c"
-        android:textSize="18dp"
-        android:textStyle="bold" />
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="রক্তই হোক আত্মার বাঁধন"
+        android:text="United R64"
         android:layout_gravity="center"
         android:textColor="#d20c0c"
         android:textSize="18dp"
@@ -36,8 +22,9 @@
     <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="username"
-        android:id="@+id/login_activity_usernameField"/>
+        android:inputType="textEmailAddress"
+        android:hint="email"
+        android:id="@+id/login_activity_emailField"/>
     <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -61,25 +48,6 @@
         android:text="Register"
         android:textStyle="bold"
         android:id="@+id/login_activity_registerBtn"/>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="FACEBOOK LOGIN"
-            android:id="@+id/login_activity_facebookLoginBtn"/>
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="GOOGLE LOGIN"
-            android:id="@+id/login_activity_googleLoginBtn"/>
-
-    </LinearLayout>
     </LinearLayout>
 
     <FrameLayout

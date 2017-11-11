@@ -1,11 +1,20 @@
 package org.badhan.r64.service;
 
+import android.support.annotation.NonNull;
+import android.util.Log;
+
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.squareup.otto.Subscribe;
 
 import org.badhan.r64.core.Auth;
 import org.badhan.r64.core.MyApplication;
 import org.badhan.r64.entity.User;
 import org.badhan.r64.service.auth.LoginResponse;
+import org.badhan.r64.service.auth.LoginWithEmail;
 import org.badhan.r64.service.auth.LoginWithExternalProvider;
 import org.badhan.r64.service.auth.LoginWithLocalToken;
 import org.badhan.r64.service.auth.LoginWithUsername;
@@ -67,60 +76,44 @@ public class InMemoryAccountService extends BaseInMemoryService {
     }
 
     @Subscribe
-    public void loginWithUsername(final LoginWithUsername.Request request){
-        final LoginWithUsername.Response response = new LoginWithUsername.Response();
+    public void loginWithEmail(final LoginWithEmail.Request request){
+        final LoginWithEmail.Response response = new LoginWithEmail.Response();
+        final FirebaseAuth mAuth = application.getFirebaseAuth();
 
-        invokeDelayed(new Runnable() {
-            @Override
-            public void run() {
-                if (request.username.equals("borhan"))
-                    response.setPropertyError("username","username should not borhan");
-                loginUser(response);
-                bus.post(response);
-            }
-        }, 2000,3000);
+        mAuth.signInWithEmailAndPassword(request.email, request.password)
+                .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if (task.isSuccessful()) {
+                            // Sign in success, update UI with the signed-in user's information
+                            Log.e("login", "signInWithEmail:success");
+                            FirebaseUser user = mAuth.getCurrentUser();
+                            loginUser(response);
+
+                        } else {
+                            // If sign in fails, display a message to the user.
+                            response.setPropertyError("email","email or password is wrong");
+                            response.setPropertyError("password","email or password is wrong");
+                            Log.w("login", "signInWithEmail:failure", task.getException());
+                            response.setOperationError("login failed");
+                        }
+
+                        bus.post(response);
+                    }
+                });
+
+//        invokeDelayed(new Runnable() {
+//            @Override
+//            public void run() {
+//                if (request.email.equals("borhan"))
+//                    response.setPropertyError("email","email should not borhan");
+//                loginUser(response);
+//                bus.post(response);
+//            }
+//        }, 2000,3000);
 
 
     }
-
-    @Subscribe
-    public void loginWithExternalProvider(LoginWithExternalProvider.Request request){
-        final LoginWithExternalProvider.Response response = new LoginWithExternalProvider.Response();
-        invokeDelayed(new Runnable() {
-            @Override
-            public void run() {
-                loginUser(response);
-                bus.post(response);
-            }
-        },2000,3000);
-    }
-
-    @Subscribe
-    public void register(Register.Request request){
-        final Register.Response response = new Register.Response();
-
-        invokeDelayed(new Runnable() {
-            @Override
-            public void run() {
-                loginUser(response);
-                bus.post(response);
-            }
-        },2000,3000);
-    }
-
-    @Subscribe
-    public void registerWithExternalProvider(RegisterWithExternalProvider.Request request){
-        final RegisterWithExternalProvider.Response response = new RegisterWithExternalProvider.Response();
-
-        invokeDelayed(new Runnable() {
-            @Override
-            public void run() {
-                loginUser(response);
-                bus.post(response);
-            }
-        },2000,3000);
-    }
-
 
     @Subscribe
     public void loginWithLocalToken(LoginWithLocalToken.Request request){
@@ -133,6 +126,42 @@ public class InMemoryAccountService extends BaseInMemoryService {
                 bus.post(response);
             }
         }, 2000,3000);
+    }
+
+    @Subscribe
+    public void register(Register.Request request){
+        final Register.Response response = new Register.Response();
+        final FirebaseAuth mAuth = application.getFirebaseAuth();
+        String email = request.email;
+        String password = request.password;
+
+        mAuth.createUserWithEmailAndPassword(email, password)
+                .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if (task.isSuccessful()) {
+                            // Sign in success, update UI with the signed-in user's information
+                            Log.e("register", "createUserWithEmail:success");
+                            FirebaseUser user = mAuth.getCurrentUser();
+                            loginUser(response);
+                        } else {
+                            response.setOperationError("login failed");
+                            // If sign in fails, display a message to the user.
+                            Log.e("register", "createUserWithEmail:failure",
+                                    task.getException());
+                        }
+
+                        bus.post(response);
+                    }
+                });
+
+//        invokeDelayed(new Runnable() {
+//            @Override
+//            public void run() {
+//                loginUser(response);
+//                bus.post(response);
+//            }
+//        },2000,3000);
     }
 
 
