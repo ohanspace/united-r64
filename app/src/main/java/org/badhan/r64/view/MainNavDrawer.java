@@ -7,6 +7,7 @@ import android.widget.TextView;
 import com.squareup.otto.Subscribe;
 
 import org.badhan.r64.R;
+import org.badhan.r64.activity.cadre.CadresActivity;
 import org.badhan.r64.activity.contact.ContactsActivity;
 import org.badhan.r64.activity.InboxActivity;
 import org.badhan.r64.activity.MainActivity;
@@ -34,6 +35,7 @@ public class MainNavDrawer extends NavDrawer {
         addItem(new ActivityNavDrawerItem(InboxActivity.class, "Inbox", R.drawable.ic_action_email, null, R.id.include_main_nav_drawer_topItems));
         addItem(new ActivityNavDrawerItem(SentMessagesActivity.class, "Sent Messages", R.drawable.ic_action_sent_message, null, R.id.include_main_nav_drawer_topItems));
         addItem(new ActivityNavDrawerItem(ContactsActivity.class, "Contacts", R.drawable.ic_action_contacts, null, R.id.include_main_nav_drawer_topItems));
+        addItem(new ActivityNavDrawerItem(CadresActivity.class, "Cadres", R.drawable.ic_action_contacts, null, R.id.include_main_nav_drawer_topItems));
 
         addItem(new BasicNavDrawerItem("logout", R.drawable.ic_action_exit, null, R.id.include_main_nav_drawer_bottomItems){
             @Override

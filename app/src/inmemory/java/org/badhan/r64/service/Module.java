@@ -7,5 +7,6 @@ public class Module {
         new InMemoryAccountService(application);
         new InMemoryContactService(application);
         new InMemoryMessageService(application);
+        new InMemoryCadreService(application);
     }
 }
