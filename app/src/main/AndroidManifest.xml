@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="org.badhan.blooddonor">
+    package="org.badhan.r64">
 
     <uses-permission android:name="android.permission.INTERNET" />
 
     <application
-        android:name=".core.MyApplication"
+        android:name="org.badhan.r64.core.MyApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -13,7 +13,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".activity.MainActivity"
+            android:name="org.badhan.r64.activity.MainActivity"
             android:label="@string/title_activity_main"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
@@ -22,17 +22,17 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".activity.auth.LoginActivity"/>
-        <activity android:name=".activity.auth.RegisterActivity"/>
-        <activity android:name=".activity.auth.ExternalLoginActivity"/>
-        <activity android:name=".activity.auth.LocalTokenAuthenticationActivity"/>
-        <activity android:name=".activity.ProfileActivity"/>
-        <activity android:name=".activity.message.SentMessagesActivity"/>
-        <activity android:name=".activity.message.MessageActivity"/>
-        <activity android:name=".activity.contact.ContactsActivity"/>
-        <activity android:name=".activity.contact.ContactDetailsActivity"/>
-        <activity android:name=".activity.contact.AddContactActivity"/>
-        <activity android:name=".activity.InboxActivity"/>
+        <activity android:name="org.badhan.r64.activity.auth.LoginActivity"/>
+        <activity android:name="org.badhan.r64.activity.auth.RegisterActivity"/>
+        <activity android:name="org.badhan.r64.activity.auth.ExternalLoginActivity"/>
+        <activity android:name="org.badhan.r64.activity.auth.LocalTokenAuthenticationActivity"/>
+        <activity android:name="org.badhan.r64.activity.ProfileActivity"/>
+        <activity android:name="org.badhan.r64.activity.message.SentMessagesActivity"/>
+        <activity android:name="org.badhan.r64.activity.message.MessageActivity"/>
+        <activity android:name="org.badhan.r64.activity.contact.ContactsActivity"/>
+        <activity android:name="org.badhan.r64.activity.contact.ContactDetailsActivity"/>
+        <activity android:name="org.badhan.r64.activity.contact.AddContactActivity"/>
+        <activity android:name="org.badhan.r64.activity.InboxActivity"/>
 
         <activity android:name="com.soundcloud.android.crop.CropImageActivity" />
     </application>

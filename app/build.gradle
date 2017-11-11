@@ -4,7 +4,7 @@ android {
     compileSdkVersion 26
     buildToolsVersion '26.0.2'
     defaultConfig {
-        applicationId "org.badhan.blooddonor"
+        applicationId "org.badhan.r64"
         minSdkVersion 19
         targetSdkVersion 26
         versionCode 1
@@ -23,10 +23,10 @@ android {
 
     productFlavors {
         inmemory {
-            applicationId "org.badhan.blooddonor.inmemory"
+            applicationId "org.badhan.r64.inmemory"
         }
         live {
-            applicationId "org.badhan.blooddonor"
+            applicationId "org.badhan.r64"
         }
     }
 }
