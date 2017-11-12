@@ -10,7 +10,13 @@ public final class GetCadres {
     private GetCadres(){}
 
     public static class Request extends ServiceRequest{
+        public String group;
 
+        public Request(){}
+
+        public Request(String group) {
+            this.group = group;
+        }
     }
 
 
