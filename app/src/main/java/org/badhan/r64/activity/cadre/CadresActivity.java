@@ -70,7 +70,7 @@ public class CadresActivity extends BaseAuthActivity implements CadresAdapter.On
         else
             recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-
+        showProgressBar();
         bus.post(new GetCadres.Request());
     }
 
@@ -85,6 +85,7 @@ public class CadresActivity extends BaseAuthActivity implements CadresAdapter.On
 
     @Subscribe
     public void onCadresLoaded(GetCadres.Response response){
+        hideProgressBar();
         response.showErrorToast(this);
 
         int oldcadresSize = cadres.size();
@@ -101,6 +102,7 @@ public class CadresActivity extends BaseAuthActivity implements CadresAdapter.On
     private class SpinnerItemSelectedHandler implements android.widget.AdapterView.OnItemSelectedListener {
         @Override
         public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+            showProgressBar();
             GroupSpinnerItem item = groupSpinnerAdapter.getItem(i);
             if (item == null)
                 return;
@@ -140,5 +142,13 @@ public class CadresActivity extends BaseAuthActivity implements CadresAdapter.On
             return title;
         }
 
+    }
+
+    private void showProgressBar(){
+        progressBarFrame.setVisibility(View.VISIBLE);
+    }
+
+    private void hideProgressBar(){
+        progressBarFrame.setVisibility(View.GONE);
     }
 }
