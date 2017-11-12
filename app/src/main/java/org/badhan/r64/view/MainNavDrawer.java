@@ -13,6 +13,7 @@ import org.badhan.r64.activity.InboxActivity;
 import org.badhan.r64.activity.MainActivity;
 import org.badhan.r64.activity.ProfileActivity;
 import org.badhan.r64.activity.message.SentMessagesActivity;
+import org.badhan.r64.activity.trainer.TrainersActivity;
 import org.badhan.r64.core.BaseActivity;
 import org.badhan.r64.entity.User;
 import org.badhan.r64.service.profile.UserDetailsUpdatedEvent;
@@ -36,6 +37,9 @@ public class MainNavDrawer extends NavDrawer {
         addItem(new ActivityNavDrawerItem(SentMessagesActivity.class, "Sent Messages", R.drawable.ic_action_sent_message, null, R.id.include_main_nav_drawer_topItems));
         addItem(new ActivityNavDrawerItem(ContactsActivity.class, "Contacts", R.drawable.ic_action_contacts, null, R.id.include_main_nav_drawer_topItems));
         addItem(new ActivityNavDrawerItem(CadresActivity.class, "Cadres", R.drawable.ic_action_contacts, null, R.id.include_main_nav_drawer_topItems));
+        addItem(new ActivityNavDrawerItem(TrainersActivity.class,
+                "CMT", R.drawable.ic_action_contacts,
+                null, R.id.include_main_nav_drawer_topItems));
 
         addItem(new BasicNavDrawerItem("logout", R.drawable.ic_action_exit, null, R.id.include_main_nav_drawer_bottomItems){
             @Override

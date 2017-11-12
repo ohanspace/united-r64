@@ -37,6 +37,7 @@
         <activity android:name="org.badhan.r64.activity.cadre.CadresActivity"/>
         <activity android:name="org.badhan.r64.activity.cadre.CadreActivity"/>
         <activity android:name="org.badhan.r64.activity.auth.PhoneAuth"/>
+        <activity android:name="org.badhan.r64.activity.trainer.TrainersActivity"/>
 
         <activity android:name="com.soundcloud.android.crop.CropImageActivity" />
     </application>
