@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <include layout="@layout/include_toolbar_main"
+        android:id="@+id/include_toolbar_main"/>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/include_toolbar_main"
+        android:padding="3dp"
+        android:id="@+id/cadre_activity_header">
+
+        <ImageView
+            android:layout_width="64dp"
+            android:layout_height="64dp"
+            android:scaleType="fitXY"
+            android:id="@+id/cadre_activity_avatar"
+            android:layout_marginEnd="16dp"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toEndOf="@id/cadre_activity_avatar"
+            android:textSize="16sp"
+            android:text="Chy Raihan Evna Sultan"
+            android:textColor="#de000000"
+            android:textStyle="bold"
+            android:layout_marginBottom="3dp"
+            android:id="@+id/cadre_activity_displayName"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="35th BCS Public works"
+            android:layout_toEndOf="@id/cadre_activity_avatar"
+            android:layout_below="@id/cadre_activity_displayName"
+            android:textColor="#333"
+            android:id="@+id/cadre_activity_cadreBatchType"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Chittagong PWD E/M division"
+            android:layout_toEndOf="@id/cadre_activity_avatar"
+            android:layout_below="@id/cadre_activity_cadreBatchType"
+            android:id="@+id/cadre_activity_postingAddress"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="A+"
+            android:textColor="#ee00"
+            android:layout_toEndOf="@id/cadre_activity_displayName"
+            android:layout_alignTop="@id/cadre_activity_displayName"
+            android:textSize="20dp"
+            android:layout_marginLeft="15dp"
+            android:id="@+id/cadre_activity_bloodGroup" />
+    </RelativeLayout>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/cadre_activity_header"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:layout_margin="10dp">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Roll NO" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Cadre Id"
+            android:layout_gravity="center"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Home district"
+            android:layout_gravity="center"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="University"
+            android:layout_gravity="center"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Session"
+            android:layout_gravity="center"/>
+
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="bottom">
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Call"
+            android:background="@color/colorPrimary"
+            android:textColor="@color/colorWhite"
+            android:layout_margin="3dp"
+            android:layout_gravity="bottom"
+            android:id="@+id/cadre_activity_callBtn"/>
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Email"
+            android:background="@color/colorPrimary"
+            android:textColor="@color/colorWhite"
+            android:layout_gravity="bottom"
+            android:layout_margin="3dp"
+            android:id="@+id/cadre_activity_emailBtn"/>
+    </LinearLayout>
+
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#91D4FA"
+        android:clickable="true"
+        android:visibility="gone"
+        android:id="@+id/cadre_activity_progressBarFrame">
+        <ProgressBar
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:indeterminate="true"/>
+    </FrameLayout>
+</RelativeLayout>
+

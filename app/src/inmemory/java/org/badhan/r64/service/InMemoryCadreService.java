@@ -28,6 +28,7 @@ public class InMemoryCadreService extends BaseInMemoryService {
             cadre.setCadreType("BCS Administration");
             cadre.setPostingAddress("Chittagong PWD");
             cadre.setAvatarUrl("https://lorempixel.com/64/64/people/"+stringId);
+            cadre.setEmail("user"+stringId +"@example.com");
 
             response.cadres.add(cadre);
         }

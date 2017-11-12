@@ -21,6 +21,27 @@ public class Cadre implements Parcelable{
     private String avatarUrl;
 
 
+    public Cadre(){
+    }
+
+
+    public Cadre(Parcel parcel) {
+        id = parcel.readInt();
+        displayName = parcel.readString();
+        batch = parcel.readString();
+        email = parcel.readString();
+    }
+
+
+    @Override
+    public void writeToParcel(Parcel parcel, int i) {
+        //ORDER is important
+        parcel.writeInt(id);
+        parcel.writeString(displayName);
+        parcel.writeString(batch);
+        parcel.writeString(email);
+    }
+
     public String getCadreBatchType(){
         return batch + "th" + cadreType;
     }
@@ -150,20 +171,15 @@ public class Cadre implements Parcelable{
         return 0;
     }
 
-    @Override
-    public void writeToParcel(Parcel parcel, int i) {
-
-    }
-
     public static final Creator<Cadre> CREATOR = new Creator<Cadre>() {
         @Override
         public Cadre createFromParcel(Parcel parcel) {
-            return null;
+            return new Cadre(parcel);
         }
 
         @Override
-        public Cadre[] newArray(int i) {
-            return new Cadre[0];
+        public Cadre[] newArray(int size) {
+            return new Cadre[size];
         }
     };
 }
