@@ -5,6 +5,7 @@ import android.os.Bundle;
 
 import org.badhan.r64.activity.auth.LocalTokenAuthenticationActivity;
 import org.badhan.r64.activity.auth.LoginActivity;
+import org.badhan.r64.activity.auth.PhoneAuth;
 
 public abstract class BaseAuthActivity extends BaseActivity {
 
@@ -18,7 +19,7 @@ public abstract class BaseAuthActivity extends BaseActivity {
                 intent = new Intent(this, LocalTokenAuthenticationActivity.class);
                 intent.putExtra(LocalTokenAuthenticationActivity.EXTRA_REDIRECT_TO_ACTIVITY, getClass().getName());
             }else
-                intent = new Intent(this, LoginActivity.class);
+                intent = new Intent(this, PhoneAuth.class);
 
             startActivity(intent);
             finish();

@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 
 import org.badhan.r64.activity.auth.LoginActivity;
+import org.badhan.r64.activity.auth.PhoneAuth;
 import org.badhan.r64.entity.User;
 
 public class Auth {
@@ -51,7 +52,7 @@ public class Auth {
         setAuthToken(null);
 
         //go to login activity
-        Intent loginIntent = new Intent(context, LoginActivity.class);
+        Intent loginIntent = new Intent(context, PhoneAuth.class);
         loginIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
         context.startActivity(loginIntent);
     }
