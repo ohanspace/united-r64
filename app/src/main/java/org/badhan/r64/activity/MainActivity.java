@@ -1,10 +1,12 @@
 package org.badhan.r64.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
 import org.badhan.r64.R;
+import org.badhan.r64.activity.cadre.CadresActivity;
 import org.badhan.r64.adapter.CadreTypesAdapter;
 import org.badhan.r64.core.BaseAuthActivity;
 import org.badhan.r64.entity.CadreType;
@@ -39,6 +41,8 @@ public class MainActivity extends BaseAuthActivity implements CadreTypesAdapter.
 
     @Override
     public void onCadreTypeClick(CadreType cadreType) {
-
+        Intent intent = new Intent(this, CadresActivity.class);
+        intent.putExtra(CadresActivity.EXTRA_CADRE_TYPE, cadreType);
+        startActivity(intent);
     }
 }

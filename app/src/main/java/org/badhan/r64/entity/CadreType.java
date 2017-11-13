@@ -1,8 +1,11 @@
 package org.badhan.r64.entity;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import java.util.ArrayList;
 
-public final class CadreType {
+public final class CadreType implements Parcelable{
     private String key;
     private String displayName;
 
@@ -35,5 +38,27 @@ public final class CadreType {
 
         return types;
     }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel parcel, int i) {
+
+    }
+
+    public static final Creator<CadreType> CREATOR = new Creator<CadreType>() {
+        @Override
+        public CadreType createFromParcel(Parcel parcel) {
+            return null;
+        }
+
+        @Override
+        public CadreType[] newArray(int i) {
+            return new CadreType[0];
+        }
+    };
 }
 

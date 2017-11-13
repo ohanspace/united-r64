@@ -27,6 +27,7 @@ import java.util.ArrayList;
 
 
 public class CadresActivity extends BaseAuthActivity implements CadresAdapter.OnCadreClickListener {
+    public static final String EXTRA_CADRE_TYPE = "EXTRA_CADRE_TYPE";
     private static final int REQUEST_VIEW_CADRE = 1;
 
     private CadresAdapter adapter;

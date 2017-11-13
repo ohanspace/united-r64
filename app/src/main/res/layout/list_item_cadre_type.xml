@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.v7.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="wrap_content"
     android:layout_height="100dp"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    app:cardCornerRadius="0dp"
+    app:cardCornerRadius="15dp"
+    app:cardBackgroundColor="#283593"
     app:cardUseCompatPadding="true"
     android:layout_marginLeft="3dp"
     android:layout_marginRight="3dp"
@@ -19,8 +21,9 @@
             android:layout_height="match_parent"
             android:text="BCS (Administration)"
             android:textSize="18dp"
+            android:textColor="@color/colorWhite"
             android:gravity="center"
-            android:id="@+id/cadre_type_item_displayName"/>
+            android:id="@+id/cadre_type_item_displayName" />
     </RelativeLayout>
 
 
