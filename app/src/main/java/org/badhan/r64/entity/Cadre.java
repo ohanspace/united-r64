@@ -5,11 +5,12 @@ import android.os.Parcelable;
 
 public class Cadre implements Parcelable{
     private int id;
+    private String group;
     private String rollNo;
     private String cadreId;
     private String telephone;
     private String email;
-    private String displayName;
+    private String name;
     private String batch;
     private String cadreType;
     private String homeDistrict;
@@ -27,7 +28,7 @@ public class Cadre implements Parcelable{
 
     public Cadre(Parcel parcel) {
         id = parcel.readInt();
-        displayName = parcel.readString();
+        name = parcel.readString();
         batch = parcel.readString();
         email = parcel.readString();
     }
@@ -37,7 +38,7 @@ public class Cadre implements Parcelable{
     public void writeToParcel(Parcel parcel, int i) {
         //ORDER is important
         parcel.writeInt(id);
-        parcel.writeString(displayName);
+        parcel.writeString(name);
         parcel.writeString(batch);
         parcel.writeString(email);
     }
@@ -86,12 +87,19 @@ public class Cadre implements Parcelable{
         this.email = email;
     }
 
+    public String getName(){
+        return name;
+    }
+
+    public void setName(String name){
+        this.name = name;
+    }
     public String getDisplayName() {
-        return displayName;
+        return name;
     }
 
     public void setDisplayName(String displayName) {
-        this.displayName = displayName;
+        this.name = displayName;
     }
 
     public String getBatch() {

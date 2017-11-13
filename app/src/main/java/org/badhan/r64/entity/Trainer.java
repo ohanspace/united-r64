@@ -2,7 +2,7 @@ package org.badhan.r64.entity;
 
 public class Trainer {
     private int id;
-    private String displayName;
+    private String name;
     private String designation;
     private String trainingPost;
     private String telephone;
@@ -25,12 +25,20 @@ public class Trainer {
         this.id = id;
     }
 
+    public String getName(){
+        return name;
+    }
+
+    public void setName(String name){
+        this.name = name;
+    }
+
     public String getDisplayName() {
-        return displayName;
+        return name;
     }
 
     public void setDisplayName(String displayName) {
-        this.displayName = displayName;
+        this.name = displayName;
     }
 
     public String getDesignation() {
