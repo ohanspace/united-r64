@@ -37,10 +37,11 @@ public class CadresActivity extends BaseAuthActivity implements CadresAdapter.On
 
     private CadresAdapter adapter;
     private ArrayList<Cadre> cadres;
-    private ArrayList<Cadre> responseCadres;
+    private ArrayList<Cadre> allCadres;
     private View progressBarFrame;
     private ArrayAdapter<GroupSpinnerItem> groupSpinnerAdapter;
     private Spinner spinner;
+    private String groupFilter;
 
     @Override
     protected void onAppCreate(Bundle savedState) {
@@ -57,13 +58,13 @@ public class CadresActivity extends BaseAuthActivity implements CadresAdapter.On
         groupSpinnerAdapter.setDropDownViewResource(android.R.layout.simple_list_item_1);
         groupSpinnerAdapter.add(new GroupSpinnerItem("Both Group",
                 Color.parseColor("#00BEDE"),
-                new GetCadres.Request()));
+                "BOTH"));
         groupSpinnerAdapter.add(new GroupSpinnerItem("Group A",
                 Color.parseColor("#00BCD4"),
-                new GetCadres.Request("A")));
+                "A"));
         groupSpinnerAdapter.add(new GroupSpinnerItem("Group B",
                 Color.parseColor("#00BCEE"),
-                new GetCadres.Request("B")));
+                "B"));
 
         spinner = findViewById(R.id.cadres_activity_groupSpinner);
         spinner.setAdapter(groupSpinnerAdapter);
@@ -80,7 +81,13 @@ public class CadresActivity extends BaseAuthActivity implements CadresAdapter.On
             recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         showProgressBar();
-        bus.post(new GetCadres.Request());
+
+        CadreType cadreType = getIntent().getParcelableExtra(EXTRA_CADRE_TYPE);
+        if (cadreType != null){
+            bus.post(new GetCadres.Request());
+        }else{
+            bus.post(new GetCadres.Request());
+        }
     }
 
     @Override
@@ -117,7 +124,7 @@ public class CadresActivity extends BaseAuthActivity implements CadresAdapter.On
             public boolean onQueryTextChange(String newText) {
                 Log.e("text change", newText);
                 ArrayList newList = new ArrayList();
-                for (Cadre cadre : responseCadres){
+                for (Cadre cadre : allCadres){
 
                     Boolean matched = Pattern.compile(
                             Pattern.quote(newText),
@@ -137,9 +144,9 @@ public class CadresActivity extends BaseAuthActivity implements CadresAdapter.On
     }
 
 
-    private void filterByCadreType(CadreType cadreType){
-        ArrayList newList = new ArrayList();
-        for (Cadre cadre : responseCadres){
+    private ArrayList<Cadre> filterByCadreType(CadreType cadreType){
+        ArrayList<Cadre> newList = new ArrayList();
+        for (Cadre cadre : allCadres){
 
             Boolean matched = Pattern.compile(
                     Pattern.quote(cadreType.getKey()),
@@ -151,7 +158,28 @@ public class CadresActivity extends BaseAuthActivity implements CadresAdapter.On
             }
         }
 
-        refreshCadresData(newList);
+        return newList;
+    }
+
+    private void filterByGroup(String group){
+        if (group.equals("A") || group.equals("B")){
+            ArrayList<Cadre> newList = new ArrayList();
+            for (Cadre cadre : allCadres){
+
+                Boolean matched = Pattern.compile(
+                        Pattern.quote(group),
+                        Pattern.CASE_INSENSITIVE)
+                        .matcher(cadre.getCadreType())
+                        .find();
+                if (matched){
+                    newList.add(cadre);
+                }
+            }
+
+            refreshCadresData(newList);
+        }else{
+            refreshCadresData(allCadres);
+        }
     }
 
 
@@ -159,18 +187,18 @@ public class CadresActivity extends BaseAuthActivity implements CadresAdapter.On
     @Subscribe
     public void onCadresLoaded(GetCadres.Response response){
         CadreType cadreType = getIntent().getParcelableExtra(EXTRA_CADRE_TYPE);
-        responseCadres = response.cadres;
+        allCadres = response.cadres;
         hideProgressBar();
         response.showErrorToast(this);
         if (cadreType != null){
             Log.e("cadres",cadreType.getKey());
-            filterByCadreType(cadreType);
-        }else {
-            refreshCadresData(response.cadres);
+            allCadres = filterByCadreType(cadreType);
         }
+
+        refreshCadresData(allCadres);
     }
 
-    private void refreshCadresData(ArrayList newCadres){
+    private void refreshCadresData(ArrayList<Cadre> newCadres){
         int oldCadresSize = cadres.size();
         cadres.clear();
         adapter.notifyItemRangeRemoved(0, oldCadresSize);
@@ -185,11 +213,13 @@ public class CadresActivity extends BaseAuthActivity implements CadresAdapter.On
     private class SpinnerItemSelectedHandler implements android.widget.AdapterView.OnItemSelectedListener {
         @Override
         public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-            showProgressBar();
+           // showProgressBar();
             GroupSpinnerItem item = groupSpinnerAdapter.getItem(i);
             if (item == null)
                 return;
-            bus.post(item.getRequest());
+            //TODO not error null pointer
+            //filterByGroup(item.getGroup());
+
         }
 
         @Override
@@ -201,13 +231,17 @@ public class CadresActivity extends BaseAuthActivity implements CadresAdapter.On
         private final String title;
 
         private final int color;
+        private String group;
 
-        private ServiceRequest request;
 
-        public GroupSpinnerItem(String title, int color, ServiceRequest request) {
+        public GroupSpinnerItem(String title, int color, String group) {
             this.title = title;
             this.color = color;
-            this.request = request;
+            this.group = group;
+        }
+
+        public String getGroup() {
+            return group;
         }
 
         public String getTitle() {
@@ -217,9 +251,7 @@ public class CadresActivity extends BaseAuthActivity implements CadresAdapter.On
         public int getColor() {
             return color;
         }
-        public ServiceRequest getRequest() {
-            return request;
-        }
+
         @Override
         public String toString() {
             return title;
