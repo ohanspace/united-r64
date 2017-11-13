@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v4.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.v4.widget.DrawerLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:id="@+id/drawer_layout">
@@ -10,7 +11,26 @@
 
         <include layout="@layout/include_toolbar_main"/>
 
-        <include layout="@layout/include_content_main"/>
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Tap to see the cadres"
+                android:gravity="center"
+                android:textSize="16dp"
+                android:textStyle="bold"
+                android:id="@+id/activity_main_tapInfo"/>
+            <android.support.v7.widget.RecyclerView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scrollbars="vertical"
+                android:id="@+id/main_activity_cadre_type_list"
+                android:layout_below="@id/activity_main_tapInfo"/>
+
+        </RelativeLayout>
     </LinearLayout>
 
     <include layout="@layout/include_main_nav_drawer"/>

@@ -19,6 +19,7 @@ import org.badhan.r64.adapter.CadresAdapter;
 import org.badhan.r64.core.BaseAuthActivity;
 import org.badhan.r64.core.ServiceRequest;
 import org.badhan.r64.entity.Cadre;
+import org.badhan.r64.entity.CadreType;
 import org.badhan.r64.service.cadre.GetCadres;
 import org.badhan.r64.view.MainNavDrawer;
 
