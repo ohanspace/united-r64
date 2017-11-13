@@ -53,7 +53,7 @@ public class Cadre implements Parcelable{
     }
 
     public String getCadreBatchType(){
-        return batch + "th" + cadreType;
+        return batch + " th BCS" + " ("+cadreType.toLowerCase()+")";
     }
 
     public int getId() {
