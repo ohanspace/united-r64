@@ -1,5 +1,6 @@
 package org.badhan.r64.entity;
 
+import android.graphics.Color;
 import android.os.Parcel;
 import android.os.Parcelable;
 
@@ -8,10 +9,17 @@ import java.util.ArrayList;
 public final class CadreType implements Parcelable{
     private String key;
     private String displayName;
+    private String color;
 
     public CadreType(String key, String displayName) {
         this.key = key;
         this.displayName = displayName;
+    }
+
+    public CadreType(String key, String displayName, String color) {
+        this.key = key;
+        this.displayName = displayName;
+        this.color = color;
     }
 
     public String getKey() {
@@ -22,19 +30,23 @@ public final class CadreType implements Parcelable{
         return displayName;
     }
 
+    public int getColor() {
+        return Color.parseColor(color);
+    }
+
     public static ArrayList<CadreType> getAllTypes(){
         ArrayList<CadreType> types = new ArrayList<CadreType>();
 
-        types.add(new CadreType("ADMINISTRATION", "BCS (Administration)"));
-        types.add(new CadreType("AGRICULTURE", "BCS (Agriculture)"));
-        types.add(new CadreType("ECONOMIC", "BCS (Economic)"));
-        types.add(new CadreType("FISHERIES", "BCS (Fisheries)"));
-        types.add(new CadreType("INFORMATION", "BCS (Information)"));
-        types.add(new CadreType("JUDICIAL_SERVICE", "Bangladesh Judicial Service"));
-        types.add(new CadreType("LIVESTOCK", "BCS (Livestock)"));
-        types.add(new CadreType("POLICE", "BCS (Police)"));
-        types.add(new CadreType("PUBLIC_WORKS", "BCS (Public Works)"));
-        types.add(new CadreType("TAXATION", "BCS (Taxation)"));
+        types.add(new CadreType("ADMINISTRATION", "BCS (Administration)","#9575CD"));
+        types.add(new CadreType("AGRICULTURE", "BCS (Agriculture)","#42A5F5"));
+        types.add(new CadreType("ECONOMIC", "BCS (Economic)","#0097A7"));
+        types.add(new CadreType("FISHERIES", "BCS (Fisheries)","#009688"));
+        types.add(new CadreType("INFORMATION", "BCS (Information)","#FF8A65"));
+        types.add(new CadreType("JUDICIAL_SERVICE", "Bangladesh Judicial Service","#8BC34A"));
+        types.add(new CadreType("LIVESTOCK", "BCS (Livestock)","#1DE9B6"));
+        types.add(new CadreType("POLICE", "BCS (Police)","#F06292"));
+        types.add(new CadreType("PUBLIC_WORKS", "BCS (Public Works)","#FF5252"));
+        types.add(new CadreType("TAXATION", "BCS (Taxation)","#9C27B0"));
 
         return types;
     }

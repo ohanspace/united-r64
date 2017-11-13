@@ -24,5 +24,6 @@ public class CadreTypeViewHolder extends RecyclerView.ViewHolder {
         itemView.setTag(cadreType);
 
         displayName.setText(cadreType.getDisplayName());
+        cardView.setCardBackgroundColor(cadreType.getColor());
     }
 }
