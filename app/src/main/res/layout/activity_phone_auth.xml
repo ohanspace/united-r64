@@ -19,10 +19,15 @@
             android:textSize="18dp"
             android:textStyle="bold"
             android:layout_marginBottom="28dp"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Enter your valid mobile number(+88 is required)"/>
         <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="phone"
+            android:text="+88"
             android:hint="mobile no"
             android:id="@+id/phone_auth_activity_telephoneField"/>
         <EditText

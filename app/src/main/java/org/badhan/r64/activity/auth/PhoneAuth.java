@@ -19,11 +19,16 @@ import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.PhoneAuthCredential;
 import com.google.firebase.auth.PhoneAuthProvider;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.ValueEventListener;
 
 import org.badhan.r64.R;
 import org.badhan.r64.activity.ProfileActivity;
 import org.badhan.r64.core.Auth;
 import org.badhan.r64.core.BaseActivity;
+import org.badhan.r64.entity.Cadre;
 import org.badhan.r64.entity.User;
 import org.badhan.r64.service.profile.UserDetailsUpdatedEvent;
 
@@ -43,6 +48,7 @@ public class PhoneAuth extends BaseActivity implements View.OnClickListener {
     private String phoneVerificationId;
     private PhoneAuthProvider.ForceResendingToken resendingToken;
     private PhoneAuthProvider.OnVerificationStateChangedCallbacks verificationStateChangedCallbacks;
+    private static String knownTelephone;
 
     @Override
     protected void onCreate(Bundle savedState) {
@@ -83,21 +89,45 @@ public class PhoneAuth extends BaseActivity implements View.OnClickListener {
     }
 
     private void sendCode(){
-        String telephoneString = telephoneField.getText().toString();
+        final String telephoneString = telephoneField.getText().toString();
 
-        if (!checkIfTelephoneValid(telephoneString)){
-            return;
+        if (telephoneString.isEmpty()){
+            Toast.makeText(this,"invalid telephone",Toast.LENGTH_LONG).show();
         }
+        DatabaseReference userRef = application.getFirebaseDatabase()
+                .getReference("cadres/"+telephoneString);
 
+        userRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                Cadre cadre = dataSnapshot.getValue(Cadre.class);
+                if (cadre == null){
+                    Toast.makeText(PhoneAuth.this,"unknown telephone no given",Toast.LENGTH_LONG).show();
+                    hideProgressBar();
+                }else{
+                    Toast.makeText(PhoneAuth.this,"known telephone!!",Toast.LENGTH_LONG).show();
+                    //try login
+                    knownTelephone = telephoneString;
+                    trySendCode();
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+    public final void trySendCode(){
         setUpVerificationCallbacks();
 
         PhoneAuthProvider.getInstance().verifyPhoneNumber(
-                telephoneString,        // Phone number to verify
+                knownTelephone,        // Phone number to verify
                 60,                 // Timeout duration
                 TimeUnit.SECONDS,   // Unit of timeout
                 this,               // Activity (for callback binding)
                 verificationStateChangedCallbacks);
-
     }
 
     public void resendCode() {
@@ -211,7 +241,9 @@ public class PhoneAuth extends BaseActivity implements View.OnClickListener {
     }
 
     private boolean checkIfTelephoneValid(String telephoneString){
-        return true;
+
+
+        return false;
     }
 
 
