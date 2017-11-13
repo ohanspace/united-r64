@@ -11,6 +11,20 @@ public final class CadreType implements Parcelable{
     private String displayName;
     private String color;
 
+    public CadreType(Parcel parcel){
+        key = parcel.readString();
+        displayName = parcel.readString();
+        color = parcel.readString();
+    }
+
+    @Override
+    public void writeToParcel(Parcel parcel, int i) {
+        parcel.writeString(key);
+        parcel.writeString(displayName);
+        parcel.writeString(color);
+
+    }
+
     public CadreType(String key, String displayName) {
         this.key = key;
         this.displayName = displayName;
@@ -56,20 +70,15 @@ public final class CadreType implements Parcelable{
         return 0;
     }
 
-    @Override
-    public void writeToParcel(Parcel parcel, int i) {
-
-    }
-
     public static final Creator<CadreType> CREATOR = new Creator<CadreType>() {
         @Override
         public CadreType createFromParcel(Parcel parcel) {
-            return null;
+            return new CadreType(parcel);
         }
 
         @Override
-        public CadreType[] newArray(int i) {
-            return new CadreType[0];
+        public CadreType[] newArray(int size) {
+            return new CadreType[size];
         }
     };
 }

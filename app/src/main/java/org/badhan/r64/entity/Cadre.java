@@ -43,6 +43,15 @@ public class Cadre implements Parcelable{
         parcel.writeString(email);
     }
 
+    public String getSearchableText(){
+        return getName()+ "," +
+                getBatch() +"th batch" +
+                getBloodGroup() + "," +
+                getCadreType() + "," +
+                getHomeDistrict() + "," +
+                getPostingAddress();
+    }
+
     public String getCadreBatchType(){
         return batch + "th" + cadreType;
     }
