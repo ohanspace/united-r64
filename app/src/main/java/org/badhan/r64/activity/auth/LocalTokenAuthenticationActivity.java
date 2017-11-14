@@ -33,7 +33,7 @@ public class LocalTokenAuthenticationActivity extends BaseActivity {
     }
 
     private void redirectToLoginActivity() {
-        startActivity(new Intent(this, LoginActivity.class));
+        startActivity(new Intent(this, PhoneAuth.class));
         finish();
     }
 

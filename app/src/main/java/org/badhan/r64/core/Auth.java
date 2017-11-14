@@ -21,12 +21,9 @@ public class Auth {
     public Auth(Context context) {
         this.context = context;
         user = new User();
-        user.setDisplayName("Borhan Chowdhury");
-
         preferences = context.getSharedPreferences(AUTH_PREFERENCES, Context.MODE_PRIVATE);
         authToken = preferences.getString(AUTH_PREFERENCES_TOKEN, null);
     }
-
 
     public User getUser() {
         return user;

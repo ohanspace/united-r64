@@ -7,6 +7,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.provider.MediaStore;
+import android.util.Log;
 import android.view.ActionMode;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -305,6 +306,7 @@ public class ProfileActivity extends BaseAuthActivity {
 
     @Subscribe
     public void onUserDetailsUpdated(UserDetailsUpdatedEvent event){
+        Log.e("profile user updated",event.user.getDisplayName());
         getSupportActionBar().setTitle(event.user.getDisplayName());
     }
    

@@ -49,6 +49,7 @@ public class PhoneAuth extends BaseActivity implements View.OnClickListener {
     private PhoneAuthProvider.ForceResendingToken resendingToken;
     private PhoneAuthProvider.OnVerificationStateChangedCallbacks verificationStateChangedCallbacks;
     private static String knownTelephone;
+    private static User attemptedUser;
 
     @Override
     protected void onCreate(Bundle savedState) {
@@ -100,8 +101,8 @@ public class PhoneAuth extends BaseActivity implements View.OnClickListener {
         userRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                Cadre cadre = dataSnapshot.getValue(Cadre.class);
-                if (cadre == null){
+                attemptedUser = dataSnapshot.getValue(User.class);
+                if (attemptedUser == null){
                     Toast.makeText(PhoneAuth.this,"unknown telephone no given",Toast.LENGTH_LONG).show();
                     hideProgressBar();
                 }else{
@@ -224,26 +225,32 @@ public class PhoneAuth extends BaseActivity implements View.OnClickListener {
         Auth auth = application.getAuth();
         User user = auth.getUser();
 
-        user.setDisplayName("Borhan chowdhury");
-        user.setUsername("borhan");
-        user.setEmail("borhan.chittagong@gmail.com");
-        user.setAvatarUrl("https://en.gravatar.com/avatar/1");
-        user.setLoggedIn(true);
-        user.setId(123);
+        user.setId(attemptedUser.getId());
+        user.setRollNo(attemptedUser.getRollNo());
+        user.setCadreId(attemptedUser.getCadreId());
+        user.setTelephone(attemptedUser.getTelephone());
+        user.setEmail(attemptedUser.getEmail());
+        user.setCadreType(attemptedUser.getCadreType());
+        user.setBatch(attemptedUser.getBatch());
+        user.setName(attemptedUser.getName());
+        user.setHomeDistrict(attemptedUser.getHomeDistrict());
+        user.setPostingAddress(attemptedUser.getPostingAddress());
+        user.setBloodGroup(attemptedUser.getBloodGroup());
+        user.setUniversity(attemptedUser.getUniversity());
+        user.setSession(attemptedUser.getSession());
+        user.setGroup(attemptedUser.getGroup());
 
-        auth.setAuthToken("fakeauthtoken");
+        Log.e("auth user",Integer.toString(user.getId()));
+
+        //user.setAvatarUrl("https://en.gravatar.com/avatar/1");
+        user.setLoggedIn(true);
+        auth.setAuthToken(attemptedUser.getTelephone());
 
         bus.post(new UserDetailsUpdatedEvent(user));
         Intent intent = new Intent(this, ProfileActivity.class);
         startActivity(intent);
         Toast.makeText(this, "Login succeed",Toast.LENGTH_SHORT).show();
         finish();
-    }
-
-    private boolean checkIfTelephoneValid(String telephoneString){
-
-
-        return false;
     }
 
 

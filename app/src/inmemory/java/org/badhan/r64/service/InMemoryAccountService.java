@@ -2,14 +2,21 @@ package org.badhan.r64.service;
 
 import android.support.annotation.NonNull;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.squareup.otto.Subscribe;
 
+import org.badhan.r64.activity.auth.PhoneAuth;
 import org.badhan.r64.core.Auth;
 import org.badhan.r64.core.MyApplication;
 import org.badhan.r64.entity.User;
@@ -103,17 +110,52 @@ public class InMemoryAccountService extends BaseInMemoryService {
                 });
     }
 
+    //token is actually the telephone
     @Subscribe
     public void loginWithLocalToken(LoginWithLocalToken.Request request){
         final LoginWithLocalToken.Response response = new LoginWithLocalToken.Response();
+        String telephone = request.authToken;
 
-        invokeDelayed(new Runnable() {
+        //Log.e("locatl token", telephone);
+        DatabaseReference cadreRef = application.getFirebaseDatabase()
+                .getReference("cadres/"+telephone);
+        cadreRef.addValueEventListener(new ValueEventListener() {
             @Override
-            public void run() {
-                loginUser(response);
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                User attemptedUser = dataSnapshot.getValue(User.class);
+                if (attemptedUser == null){
+                    response.setOperationError("user not found");
+                }else{
+                    User user = application.getAuth().getUser();
+                    user.setLoggedIn(true);
+                    user.setId(attemptedUser.getId());
+                    user.setRollNo(attemptedUser.getRollNo());
+                    user.setCadreId(attemptedUser.getCadreId());
+                    user.setTelephone(attemptedUser.getTelephone());
+                    user.setEmail(attemptedUser.getEmail());
+                    user.setCadreType(attemptedUser.getCadreType());
+                    user.setBatch(attemptedUser.getBatch());
+                    user.setName(attemptedUser.getName());
+                    user.setHomeDistrict(attemptedUser.getHomeDistrict());
+                    user.setPostingAddress(attemptedUser.getPostingAddress());
+                    user.setBloodGroup(attemptedUser.getBloodGroup());
+                    user.setUniversity(attemptedUser.getUniversity());
+                    user.setSession(attemptedUser.getSession());
+                    user.setGroup(attemptedUser.getGroup());
+
+                    bus.post(new UserDetailsUpdatedEvent(user));
+
+                }
+
                 bus.post(response);
+
             }
-        }, 2000,3000);
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
     }
 
     @Subscribe
@@ -151,7 +193,6 @@ public class InMemoryAccountService extends BaseInMemoryService {
         User user = auth.getUser();
 
         user.setDisplayName("Borhan chowdhury");
-        user.setUsername("borhan");
         user.setEmail("borhan.chittagong@gmail.com");
         user.setAvatarUrl("https://en.gravatar.com/avatar/1");
         user.setLoggedIn(true);
@@ -162,7 +203,6 @@ public class InMemoryAccountService extends BaseInMemoryService {
         response.id = user.getId();
         response.displayName = user.getDisplayName();
         response.email = user.getEmail();
-        response.username = user.getUsername();
         response.avatarUrl = user.getAvatarUrl();
 
         response.authToken = auth.getAuthToken();
