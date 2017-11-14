@@ -239,6 +239,7 @@ public class PhoneAuth extends BaseActivity implements View.OnClickListener {
         user.setUniversity(attemptedUser.getUniversity());
         user.setSession(attemptedUser.getSession());
         user.setGroup(attemptedUser.getGroup());
+        user.setAvatarUrl(attemptedUser.getAvatarUri());
 
         Log.e("auth user",Integer.toString(user.getId()));
 

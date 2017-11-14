@@ -2,7 +2,6 @@ package org.badhan.r64.entity;
 
 public class User extends Cadre{
     private int id;
-    private String avatarUrl;
     private boolean isLoggedIn;
     private boolean hasPassword;
 
@@ -12,14 +11,6 @@ public class User extends Cadre{
 
     public int getId() {
         return id;
-    }
-
-    public String getAvatarUrl() {
-        return avatarUrl;
-    }
-
-    public void setAvatarUrl(String avatarUrl) {
-        this.avatarUrl = avatarUrl;
     }
 
     public boolean isLoggedIn() {

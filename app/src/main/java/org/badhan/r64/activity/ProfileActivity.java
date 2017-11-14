@@ -2,11 +2,12 @@ package org.badhan.r64.activity;
 
 import android.app.FragmentTransaction;
 import android.content.Intent;
-import android.content.pm.ResolveInfo;
+import android.content.pm.PackageManager;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
-import android.os.Parcelable;
-import android.provider.MediaStore;
+import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
 import android.util.Log;
 import android.view.ActionMode;
 import android.view.Menu;
@@ -18,6 +19,10 @@ import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 import com.soundcloud.android.crop.Crop;
 import com.squareup.otto.Subscribe;
 
@@ -25,15 +30,12 @@ import org.badhan.r64.R;
 import org.badhan.r64.core.BaseAuthActivity;
 import org.badhan.r64.dialog.ChangePasswordDialog;
 import org.badhan.r64.entity.User;
-import org.badhan.r64.service.profile.CadreDetailsUpdatedEvent;
 import org.badhan.r64.service.profile.ChangeAvatar;
 import org.badhan.r64.service.profile.UpdateProfile;
 import org.badhan.r64.service.profile.UserDetailsUpdatedEvent;
 import org.badhan.r64.view.MainNavDrawer;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
 
 
 public class ProfileActivity extends BaseAuthActivity {
@@ -145,38 +147,40 @@ public class ProfileActivity extends BaseAuthActivity {
 
         @Override
         public void onClick(View view) {
-            selectNewAvatar();
+            chooseAvatar();
         }
 
     }
 
-    private void selectNewAvatar() {
-        tempImageFile = new File(getExternalCacheDir(), "temp_avatar.jpg");
+    private void chooseAvatar() {
+        Intent intent = new Intent(Intent.ACTION_PICK);
+        intent.setType("image/*");
+        startActivityForResult(intent, REQUEST_SELECT_AVATAR);
 
-        List<Intent> otherImageCaptureIntents = new ArrayList<>();
-        List<ResolveInfo> otherImageCaptureActivity = getPackageManager()
-                .queryIntentActivities(new Intent(MediaStore.ACTION_IMAGE_CAPTURE), 0);
 
-        for (ResolveInfo info : otherImageCaptureActivity){
-            Intent captureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-            captureIntent.setAction(MediaStore.ACTION_IMAGE_CAPTURE);
-            captureIntent.setClassName(info.activityInfo.packageName, info.activityInfo.name);
-            captureIntent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(tempImageFile));
-
-            otherImageCaptureIntents.add(captureIntent);
-        }
-
-        Intent selectImageIntent = new Intent(Intent.ACTION_PICK);
-        selectImageIntent.setAction(Intent.ACTION_PICK);
-        selectImageIntent.setType("image/*");
-
-        Intent chooser = Intent.createChooser(selectImageIntent,"Chooser avatar");
-        chooser.putExtra(Intent.EXTRA_INITIAL_INTENTS,
-                otherImageCaptureIntents.toArray(new Parcelable[otherImageCaptureIntents.size()]) );
-
-        startActivityForResult(chooser, REQUEST_SELECT_AVATAR);
+//        List<Intent> otherImageCaptureIntents = new ArrayList<>();
+//        List<ResolveInfo> otherImageCaptureActivity = getPackageManager()
+//                .queryIntentActivities(new Intent(MediaStore.ACTION_IMAGE_CAPTURE), 0);
+//
+//        for (ResolveInfo info : otherImageCaptureActivity){
+//            Intent captureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+//            captureIntent.setAction(MediaStore.ACTION_IMAGE_CAPTURE);
+//            captureIntent.setClassName(info.activityInfo.packageName, info.activityInfo.name);
+//            captureIntent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(tempImageFile));
+//
+//            otherImageCaptureIntents.add(captureIntent);
+//        }
+//
+//        Intent selectImageIntent = new Intent(Intent.ACTION_PICK);
+//        selectImageIntent.setAction(Intent.ACTION_PICK);
+//        selectImageIntent.setType("image/*");
+//
+//        Intent chooser = Intent.createChooser(selectImageIntent,"Chooser avatar");
+//        chooser.putExtra(Intent.EXTRA_INITIAL_INTENTS,
+//                otherImageCaptureIntents.toArray(new Parcelable[otherImageCaptureIntents.size()]) );
+//
+//        startActivityForResult(chooser, REQUEST_SELECT_AVATAR);
     }
-
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data){
@@ -185,15 +189,99 @@ public class ProfileActivity extends BaseAuthActivity {
             return;
         }
         if (requestCode == REQUEST_SELECT_AVATAR){
-            handleSelectedImage(data);
+            if (isStoragePermissionGranted()){
+                handleSelectedImage(data);
+            }else {
+                Toast.makeText(this, "permission denied", Toast.LENGTH_SHORT).show();
+            }
         }
         else if (requestCode == Crop.REQUEST_CROP){
-            avatarChangeProgress.setVisibility(View.VISIBLE);
-            bus.post(new ChangeAvatar.Request(Uri.fromFile(tempImageFile)));
-           // avatarImage.setImageResource(0);
+            uploadCroppedImage();
+            // avatarImage.setImageResource(0);
             //avatarImage.setImageURI(Uri.fromFile(tempImageFile));
         }
     }
+
+    private void handleSelectedImage(Intent data) {
+        tempImageFile = new File(getExternalCacheDir(), "temp_avatar.jpg");
+        Uri tempImageFileUri = Uri.fromFile(tempImageFile);
+
+        if (data != null && data.getData() != null){
+            Uri localUri = data.getData();
+            Crop.of(localUri, tempImageFileUri)
+                    .asSquare()
+                    .start(this);
+        }
+//        Uri tempImageFileUri = Uri.fromFile(this.tempImageFile);
+//        Uri selectedImageFileUri;
+//        //TODO selection from gallery not working in actual phone
+//        if (data != null && data.getData() != null){
+//            //chosen from gallery
+//            selectedImageFileUri = data.getData();
+//        }else {
+//            //chosen from camera
+//            selectedImageFileUri = tempImageFileUri;
+//        }
+//
+//        Crop.of(selectedImageFileUri, tempImageFileUri)
+//                .asSquare()
+//                .start(this);
+    }
+
+    private void uploadCroppedImage(){
+        avatarChangeProgress.setVisibility(View.VISIBLE);
+        final User user = application.getAuth().getUser();
+        String remoteFileName = "userId_"+user.getId()+".jpg";
+        final StorageReference avatarRef = application.getFirebaseStorage()
+                .getReference("cadreAvatars").child(remoteFileName);
+
+        avatarRef.putFile(Uri.fromFile(tempImageFile))
+                .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                    @Override
+                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                        Toast.makeText(ProfileActivity.this,"avatar uploaded",Toast.LENGTH_SHORT).show();
+                        Log.e("avatar uri", avatarRef.getPath());
+                        bus.post(new ChangeAvatar.Request(avatarRef.getPath()));
+
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Toast.makeText(ProfileActivity.this,"avatar upload failed",Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+
+    public  boolean isStoragePermissionGranted() {
+        if (Build.VERSION.SDK_INT >= 23) {
+            if (checkSelfPermission(android.Manifest.permission.READ_EXTERNAL_STORAGE)
+                    == PackageManager.PERMISSION_GRANTED) {
+                Log.v("profile image pick","Permission is granted");
+                return true;
+            } else {
+
+                Log.v("profile image pick","Permission is revoked");
+                ActivityCompat.requestPermissions(this,
+                        new String[]{android.Manifest.permission.READ_EXTERNAL_STORAGE}, 1);
+                return false;
+            }
+        }
+        else { //permission is automatically granted on sdk<23 upon installation
+            Log.v("profile image pick","Permission is granted");
+            return true;
+        }
+    }
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if(grantResults[0]== PackageManager.PERMISSION_GRANTED){
+            Log.v("on request permission","Permission: "+permissions[0]+ "was "+grantResults[0]);
+            chooseAvatar();
+
+        }
+    }
+
     @Subscribe
     public void onAvatarUpdated(ChangeAvatar.Response response){
         avatarChangeProgress.setVisibility(View.GONE);
@@ -222,23 +310,6 @@ public class ProfileActivity extends BaseAuthActivity {
             profileUpdatingProgressBar.setVisibility(ProgressBar.GONE);
 
         isProgressBarVisible = visible; //important if activity recreated
-    }
-
-    private void handleSelectedImage(Intent data) {
-        Uri tempImageFileUri = Uri.fromFile(this.tempImageFile);
-        Uri selectedImageFileUri;
-        //TODO selection from gallery not working in actual phone
-        if (data != null && data.getData() != null){
-            //chosen from gallery
-            selectedImageFileUri = data.getData();
-        }else {
-            //chosen from camera
-            selectedImageFileUri = tempImageFileUri;
-        }
-
-        Crop.of(selectedImageFileUri, tempImageFileUri)
-                .asSquare()
-                .start(this);
     }
 
 

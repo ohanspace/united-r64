@@ -11,9 +11,9 @@ public final class ChangeAvatar {
 
 
     public static class Request extends ServiceRequest{
-        public Uri newAvatarUri;
+        public String newAvatarUri;
 
-        public Request(Uri newAvatarUri){
+        public Request(String newAvatarUri){
             this.newAvatarUri = newAvatarUri;
         }
     }

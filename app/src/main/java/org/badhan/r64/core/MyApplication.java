@@ -4,6 +4,7 @@ import android.app.Application;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.storage.FirebaseStorage;
 import com.squareup.otto.Bus;
 
 import org.badhan.r64.service.Module;
@@ -14,6 +15,7 @@ public class MyApplication extends Application {
 
     private FirebaseAuth firebaseAuth;
     private FirebaseDatabase firebaseDatabase;
+    private FirebaseStorage firebaseStorage;
 
     public MyApplication(){
         bus = new Bus();
@@ -25,7 +27,12 @@ public class MyApplication extends Application {
         auth = new Auth(this);
         firebaseAuth = FirebaseAuth.getInstance();
         firebaseDatabase = FirebaseDatabase.getInstance();
+        firebaseStorage = FirebaseStorage.getInstance();
         Module.register(this);
+    }
+
+    public FirebaseStorage getFirebaseStorage(){
+        return firebaseStorage;
     }
 
     public FirebaseDatabase getFirebaseDatabase() {

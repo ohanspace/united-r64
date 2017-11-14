@@ -2,6 +2,10 @@ package org.badhan.r64.entity;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.util.Log;
+
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 public class Cadre implements Parcelable{
     private int id;
@@ -73,6 +77,13 @@ public class Cadre implements Parcelable{
                 getHomeDistrict() + "," +
                 getPostingAddress();
     }
+
+    public StorageReference getAvatarStorageRef(){
+        StorageReference ref = FirebaseStorage.getInstance()
+                .getReference(getAvatarUri());
+        return ref;
+    }
+
 
     public String getCadreBatchType(){
         return batch + " th BCS" + " ("+cadreType.toLowerCase()+")";
@@ -205,6 +216,9 @@ public class Cadre implements Parcelable{
         this.group = group;
     }
 
+    public String getAvatarUri(){
+        return avatarUrl;
+    }
     public String getAvatarUrl() {
         return avatarUrl;
     }

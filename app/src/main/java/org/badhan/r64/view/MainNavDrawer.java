@@ -1,9 +1,15 @@
 package org.badhan.r64.view;
 
+import android.net.Uri;
+import android.support.annotation.NonNull;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.storage.StorageReference;
 import com.squareup.otto.Subscribe;
 import com.squareup.picasso.Picasso;
 
@@ -19,6 +25,7 @@ import org.badhan.r64.core.BaseActivity;
 import org.badhan.r64.entity.Cadre;
 import org.badhan.r64.entity.User;
 import org.badhan.r64.service.profile.CadreDetailsUpdatedEvent;
+import org.badhan.r64.service.profile.GotAvatarDownloadLinkEvent;
 import org.badhan.r64.service.profile.UserDetailsUpdatedEvent;
 import org.badhan.r64.view.navDrawer.ActivityNavDrawerItem;
 import org.badhan.r64.view.navDrawer.BasicNavDrawerItem;
@@ -67,12 +74,24 @@ public class MainNavDrawer extends NavDrawer {
     private void refreshDrawer(User user){
         displayNameView.setText(user.getDisplayName());
         telephoneView.setText(user.getTelephone());
-        
-        Picasso.with(activity)
-                .load(user.getAvatarUrl())
-                .placeholder(R.drawable.ic_action_profile)
-                .error(R.drawable.ic_action_profile)
-                .into(avatarImageView);
+
+        user.getAvatarStorageRef().getDownloadUrl()
+                .addOnSuccessListener(new OnSuccessListener<Uri>() {
+            @Override
+            public void onSuccess(Uri uri) {
+                Log.e("got download uri",uri.toString());
+                Picasso.with(activity)
+                        .load(uri.toString())
+                        .placeholder(R.drawable.ic_action_profile)
+                        .error(R.drawable.ic_action_profile)
+                        .into(avatarImageView);
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                avatarImageView.setImageResource(R.drawable.ic_action_profile);
+            }
+        });
     }
 
 
@@ -81,6 +100,16 @@ public class MainNavDrawer extends NavDrawer {
         //todo update avatar img
         User user = event.user;
         refreshDrawer(user);
+    }
+
+    @Subscribe
+    public void onGotAvatarDownloadLink(GotAvatarDownloadLinkEvent event){
+
+        Picasso.with(activity)
+                .load(event.downloadUrl)
+                .placeholder(R.drawable.ic_action_profile)
+                .error(R.drawable.ic_action_profile)
+                .into(avatarImageView);
     }
 
     @Subscribe

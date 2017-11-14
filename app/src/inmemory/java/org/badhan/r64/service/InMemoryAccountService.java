@@ -5,6 +5,8 @@ import android.util.Log;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
@@ -118,16 +120,31 @@ public class InMemoryAccountService extends BaseInMemoryService {
 
     @Subscribe
     public void changeAvatar(final ChangeAvatar.Request request){
-        invokeDelayed(new Runnable() {
-            @Override
-            public void run() {
-                User user = application.getAuth().getUser();
-                user.setAvatarUrl(request.newAvatarUri.toString());
+        final ChangeAvatar.Response response = new ChangeAvatar.Response();
 
-                bus.post(new ChangeAvatar.Response());
+        final User user = application.getAuth().getUser();
+        final String avatarUri = request.newAvatarUri;
+        Log.e("get avatar uri",avatarUri);
+        //TODO avatarUri is empty
+        DatabaseReference userRef = application.getFirebaseDatabase()
+                .getReference("cadres/"+ user.getTelephone());
+
+        userRef.child("avatarUrl").setValue(avatarUri)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void aVoid) {
+                user.setAvatarUrl(avatarUri);
                 bus.post(new UserDetailsUpdatedEvent(user));
+                bus.post(response);
             }
-        },3000,4000);
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    response.setOperationError("avatar url did not persist");
+                    bus.post(response);
+                }
+            });
+
     }
 
     @Subscribe
@@ -202,6 +219,7 @@ public class InMemoryAccountService extends BaseInMemoryService {
                     user.setUniversity(attemptedUser.getUniversity());
                     user.setSession(attemptedUser.getSession());
                     user.setGroup(attemptedUser.getGroup());
+                    user.setAvatarUrl(attemptedUser.getAvatarUri());
 
                     bus.post(new UserDetailsUpdatedEvent(user));
 
@@ -263,7 +281,6 @@ public class InMemoryAccountService extends BaseInMemoryService {
         response.id = user.getId();
         response.displayName = user.getDisplayName();
         response.email = user.getEmail();
-        response.avatarUrl = user.getAvatarUrl();
 
         response.authToken = auth.getAuthToken();
 
