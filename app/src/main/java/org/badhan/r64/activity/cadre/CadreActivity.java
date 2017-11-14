@@ -3,11 +3,14 @@ package org.badhan.r64.activity.cadre;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.squareup.picasso.Picasso;
 
 import org.badhan.r64.R;
@@ -99,11 +102,22 @@ public class CadreActivity extends BaseAuthActivity implements View.OnClickListe
         currentCadre = cadre;
         getSupportActionBar().setTitle(cadre.getName());
 
-        Picasso.with(this)
-                .load(cadre.getAvatarUrl())
-                .placeholder(R.drawable.ic_action_profile)
-                .error(R.drawable.ic_action_profile)
-                .into(avatar);
+        cadre.getAvatarStorageRef().getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+            @Override
+            public void onSuccess(Uri uri) {
+                Picasso.with(CadreActivity.this)
+                        .load(uri.toString())
+                        .placeholder(R.drawable.ic_action_profile)
+                        .error(R.drawable.ic_action_profile)
+                        .into(avatar);
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                avatar.setImageResource(R.drawable.ic_action_profile);
+            }
+        });
+
 
         rollNo.setText(cadre.getRollNo());
         displayName.setText(cadre.getDisplayName());

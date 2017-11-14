@@ -25,6 +25,7 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.soundcloud.android.crop.Crop;
 import com.squareup.otto.Subscribe;
+import com.squareup.picasso.Picasso;
 
 import org.badhan.r64.R;
 import org.badhan.r64.core.BaseAuthActivity;
@@ -98,6 +99,23 @@ public class ProfileActivity extends BaseAuthActivity {
         if (isProgressBarVisible)
             showProgressBar(true);
 
+        downloadAvatarIfExist();
+
+    }
+
+    private void downloadAvatarIfExist(){
+        User user = application.getAuth().getUser();
+        user.getAvatarStorageRef().getDownloadUrl()
+                .addOnSuccessListener(new OnSuccessListener<Uri>() {
+            @Override
+            public void onSuccess(Uri uri) {
+                Picasso.with(ProfileActivity.this)
+                        .load(uri.toString())
+                        .placeholder(R.drawable.ic_action_profile)
+                        .error(R.drawable.ic_action_profile)
+                        .into(avatarImage);
+            }
+        });
     }
 
     private void bindControls() {
@@ -288,6 +306,9 @@ public class ProfileActivity extends BaseAuthActivity {
         //todo handle error
         if (!response.succeed())
             response.showErrorToast(this);
+
+        downloadAvatarIfExist();
+
     }
 
     @Subscribe
