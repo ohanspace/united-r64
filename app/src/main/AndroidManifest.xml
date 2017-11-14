@@ -27,7 +27,9 @@
         <activity android:name="org.badhan.r64.activity.auth.RegisterActivity"/>
         <activity android:name="org.badhan.r64.activity.auth.ExternalLoginActivity"/>
         <activity android:name="org.badhan.r64.activity.auth.LocalTokenAuthenticationActivity"/>
-        <activity android:name="org.badhan.r64.activity.ProfileActivity"/>
+        <activity
+            android:name="org.badhan.r64.activity.ProfileActivity"
+            android:windowSoftInputMode="adjustResize"/>
         <activity android:name="org.badhan.r64.activity.message.SentMessagesActivity"/>
         <activity android:name="org.badhan.r64.activity.message.MessageActivity"/>
         <activity android:name="org.badhan.r64.activity.contact.ContactsActivity"/>

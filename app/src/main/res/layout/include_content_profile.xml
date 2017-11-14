@@ -112,6 +112,7 @@
             android:id="@+id/profile_activity_progressBar"
             android:indeterminate="true"
             android:visibility="visible"
+            android:clickable="true"
             android:layout_centerInParent="true"/>
 
 </RelativeLayout>
