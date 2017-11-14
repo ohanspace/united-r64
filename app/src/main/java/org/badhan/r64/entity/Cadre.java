@@ -28,9 +28,20 @@ public class Cadre implements Parcelable{
 
     public Cadre(Parcel parcel) {
         id = parcel.readInt();
+        group = parcel.readString();
+        rollNo = parcel.readString();
+        cadreId = parcel.readString();
+        telephone = parcel.readString();
+        email = parcel.readString();
         name = parcel.readString();
         batch = parcel.readString();
-        email = parcel.readString();
+        cadreType = parcel.readString();
+        homeDistrict = parcel.readString();
+        postingAddress = parcel.readString();
+        university = parcel.readString();
+        session = parcel.readString();
+        bloodGroup = parcel.readString();
+        avatarUrl = parcel.readString();
     }
 
 
@@ -38,9 +49,20 @@ public class Cadre implements Parcelable{
     public void writeToParcel(Parcel parcel, int i) {
         //ORDER is important
         parcel.writeInt(id);
+        parcel.writeString(group);
+        parcel.writeString(rollNo);
+        parcel.writeString(cadreId);
+        parcel.writeString(telephone);
+        parcel.writeString(email);
         parcel.writeString(name);
         parcel.writeString(batch);
-        parcel.writeString(email);
+        parcel.writeString(cadreType);
+        parcel.writeString(homeDistrict);
+        parcel.writeString(postingAddress);
+        parcel.writeString(university);
+        parcel.writeString(session);
+        parcel.writeString(bloodGroup);
+        parcel.writeString(avatarUrl);
     }
 
     public String getSearchableText(){

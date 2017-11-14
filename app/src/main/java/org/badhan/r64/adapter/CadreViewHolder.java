@@ -34,7 +34,8 @@ public class CadreViewHolder extends RecyclerView.ViewHolder {
 
         Picasso.with(context)
                 .load(cadre.getAvatarUrl())
-                .error(R.drawable.ic_action_contacts)
+                .placeholder(R.drawable.ic_action_profile)
+                .error(R.drawable.ic_action_profile)
                 .into(avatar);
 
         displayName.setText(cadre.getDisplayName());

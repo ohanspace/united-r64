@@ -7,28 +7,46 @@
     <include layout="@layout/include_toolbar_main"
         android:id="@+id/include_toolbar_main"/>
 
-    <RelativeLayout
+
+
+
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/include_toolbar_main"
-        android:padding="3dp"
-        android:id="@+id/cadre_activity_header">
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:layout_margin="10dp">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="26sp"
+            android:text="A21"
+            android:textStyle="bold"
+            android:id="@+id/cadre_activity_rollNo"/>
 
         <ImageView
             android:layout_width="64dp"
             android:layout_height="64dp"
             android:scaleType="fitXY"
-            android:id="@+id/cadre_activity_avatar"
-            android:layout_marginEnd="16dp"/>
+            android:src="@drawable/ic_action_profile"
+            android:id="@+id/cadre_activity_avatar"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Cadre Id not found"
+            android:layout_gravity="center"
+            android:id="@+id/cadre_activity_cadreId"/>
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_toEndOf="@id/cadre_activity_avatar"
-            android:textSize="16sp"
-            android:text="Chy Raihan Evna Sultan"
+            android:text="Chy Raihan Evna Sultan fafafafaasfafafs"
             android:textColor="#de000000"
+            android:textAlignment="center"
             android:textStyle="bold"
             android:layout_marginBottom="3dp"
+            android:textSize="22sp"
             android:id="@+id/cadre_activity_displayName"/>
         <TextView
             android:layout_width="wrap_content"
@@ -37,6 +55,7 @@
             android:layout_toEndOf="@id/cadre_activity_avatar"
             android:layout_below="@id/cadre_activity_displayName"
             android:textColor="#333"
+            android:textSize="18sp"
             android:id="@+id/cadre_activity_cadreBatchType"/>
         <TextView
             android:layout_width="wrap_content"
@@ -44,52 +63,41 @@
             android:text="Chittagong PWD E/M division"
             android:layout_toEndOf="@id/cadre_activity_avatar"
             android:layout_below="@id/cadre_activity_cadreBatchType"
+            android:textSize="18sp"
             android:id="@+id/cadre_activity_postingAddress"/>
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="A+"
+            android:text="Blood Group A+"
             android:textColor="#ee00"
             android:layout_toEndOf="@id/cadre_activity_displayName"
             android:layout_alignTop="@id/cadre_activity_displayName"
-            android:textSize="20dp"
-            android:layout_marginLeft="15dp"
+            android:textSize="16sp"
             android:id="@+id/cadre_activity_bloodGroup" />
-    </RelativeLayout>
 
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@id/cadre_activity_header"
-        android:orientation="vertical"
-        android:gravity="center"
-        android:layout_margin="10dp">
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Roll NO" />
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Cadre Id"
-            android:layout_gravity="center"/>
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Home district"
-            android:layout_gravity="center"/>
+            android:textStyle="italic"
+            android:layout_gravity="center"
+            android:textSize="16sp"
+            android:id="@+id/cadre_activity_homeDistrict"/>
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="University"
-            android:layout_gravity="center"/>
+            android:layout_gravity="center"
+            android:textSize="14sp"
+            android:id="@+id/cadre_activity_university"/>
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Session"
-            android:layout_gravity="center"/>
-
+            android:layout_gravity="center"
+            android:textSize="14sp"
+            android:id="@+id/cadre_activity_session"/>
 
     </LinearLayout>
 
@@ -106,6 +114,9 @@
             android:textColor="@color/colorWhite"
             android:layout_margin="3dp"
             android:layout_gravity="bottom"
+            android:paddingLeft="20dp"
+            android:drawableLeft="@drawable/ic_action_call"
+            android:drawablePadding="-20dp"
             android:id="@+id/cadre_activity_callBtn"/>
         <Button
             android:layout_width="wrap_content"
@@ -116,6 +127,9 @@
             android:textColor="@color/colorWhite"
             android:layout_gravity="bottom"
             android:layout_margin="3dp"
+            android:paddingLeft="20dp"
+            android:drawableLeft="@drawable/ic_action_email"
+            android:drawablePadding="-20dp"
             android:id="@+id/cadre_activity_emailBtn"/>
     </LinearLayout>
 

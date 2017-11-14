@@ -5,12 +5,16 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.squareup.picasso.Picasso;
 
 import org.badhan.r64.R;
 import org.badhan.r64.core.BaseAuthActivity;
 import org.badhan.r64.entity.Cadre;
 import org.badhan.r64.view.MainNavDrawer;
+import org.w3c.dom.Text;
 
 
 public class CadreActivity extends BaseAuthActivity implements View.OnClickListener {
@@ -22,7 +26,17 @@ public class CadreActivity extends BaseAuthActivity implements View.OnClickListe
     private View progressBarFrame;
     private Button callBtn;
     private Button emailBtn;
+
+    private ImageView avatar;
     private TextView displayName;
+    private TextView rollNo;
+    private TextView cadreId;
+    private TextView batchCadreType;
+    private TextView postingAddress;
+    private TextView bloodGroup;
+    private TextView homeDistrict;
+    private TextView university;
+    private TextView session;
 
 
     @Override
@@ -32,9 +46,20 @@ public class CadreActivity extends BaseAuthActivity implements View.OnClickListe
         toolbar.setNavigationIcon(R.drawable.crop__ic_cancel);
 
         progressBarFrame = findViewById(R.id.cadre_activity_progressBarFrame);
+
         callBtn = findViewById(R.id.cadre_activity_callBtn);
         emailBtn = findViewById(R.id.cadre_activity_emailBtn);
+
+        avatar = findViewById(R.id.cadre_activity_avatar);
+        rollNo = findViewById(R.id.cadre_activity_rollNo);
         displayName = findViewById(R.id.cadre_activity_displayName);
+        cadreId = findViewById(R.id.cadre_activity_cadreId);
+        batchCadreType = findViewById(R.id.cadre_activity_cadreBatchType);
+        postingAddress = findViewById(R.id.cadre_activity_postingAddress);
+        bloodGroup = findViewById(R.id.cadre_activity_bloodGroup);
+        homeDistrict = findViewById(R.id.cadre_activity_homeDistrict);
+        university = findViewById(R.id.cadre_activity_university);
+        session = findViewById(R.id.cadre_activity_session);
 
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
@@ -69,10 +94,27 @@ public class CadreActivity extends BaseAuthActivity implements View.OnClickListe
     }
 
     private void showCadreDetails(Cadre cadre){
-        currentCadre = cadre;
-
-        displayName.setText(cadre.getDisplayName());
         progressBarFrame.setVisibility(View.GONE);
+
+        currentCadre = cadre;
+        getSupportActionBar().setTitle(cadre.getName());
+
+        Picasso.with(this)
+                .load(cadre.getAvatarUrl())
+                .placeholder(R.drawable.ic_action_profile)
+                .error(R.drawable.ic_action_profile)
+                .into(avatar);
+
+        rollNo.setText(cadre.getRollNo());
+        displayName.setText(cadre.getDisplayName());
+        cadreId.setText(cadre.getCadreId());
+        batchCadreType.setText(cadre.getCadreBatchType());
+        postingAddress.setText(cadre.getPostingAddress());
+        bloodGroup.setText(cadre.getBloodGroup());
+        homeDistrict.setText(cadre.getHomeDistrict());
+        university.setText(cadre.getUniversity());
+        session.setText(cadre.getSession());
+
 
         if (cadre.getTelephone() == null){
             callBtn.setEnabled(false);
