@@ -29,6 +29,7 @@
             android:inputType="phone"
             android:text="+88"
             android:hint="mobile no"
+            android:focusedByDefault="true"
             android:id="@+id/phone_auth_activity_telephoneField"/>
         <EditText
             android:layout_width="match_parent"

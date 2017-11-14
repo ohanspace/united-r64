@@ -1,12 +1,16 @@
 package org.badhan.r64.adapter;
 
 import android.content.Context;
+import android.net.Uri;
+import android.support.annotation.NonNull;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.squareup.picasso.Picasso;
 
 import org.badhan.r64.R;
@@ -29,14 +33,27 @@ public class CadreViewHolder extends RecyclerView.ViewHolder {
     }
 
 
-    public void populate(Context context, Cadre cadre){
+    public void populate(final Context context, Cadre cadre){
         itemView.setTag(cadre);
 
-        Picasso.with(context)
-                .load(cadre.getAvatarUrl())
-                .placeholder(R.drawable.ic_action_profile)
-                .error(R.drawable.ic_action_profile)
-                .into(avatar);
+        cadre.getAvatarStorageRef().getDownloadUrl()
+                .addOnSuccessListener(new OnSuccessListener<Uri>() {
+                    @Override
+                    public void onSuccess(Uri uri) {
+                        Picasso.with(context)
+                                .load(uri.toString())
+                                .placeholder(R.drawable.ic_action_profile)
+                                .error(R.drawable.ic_action_profile)
+                                .into(avatar);
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        avatar.setImageResource(R.drawable.ic_action_profile);
+                    }
+                });
+
 
         displayName.setText(cadre.getDisplayName());
         cadreBatchType.setText(cadre.getCadreBatchType());

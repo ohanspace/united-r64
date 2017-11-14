@@ -79,6 +79,9 @@ public class Cadre implements Parcelable{
     }
 
     public StorageReference getAvatarStorageRef(){
+        if (getAvatarUri() == null){
+            setAvatarUrl("fakeUri"); // for avoiding illegal reference error
+        }
         StorageReference ref = FirebaseStorage.getInstance()
                 .getReference(getAvatarUri());
         return ref;
