@@ -28,6 +28,15 @@
             android:text="Place holding name"
             android:id="@+id/include_main_nav_drawer_displayName"
             android:textColor="@color/colorWhite"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="+8801922503521"
+            android:textColor="@color/colorWhite"
+            android:layout_below="@id/include_main_nav_drawer_displayName"
+            android:layout_toEndOf="@id/include_main_nav_drawer_avatar"
+            android:id="@+id/include_main_nav_drawer_telephone"
+            />
     </RelativeLayout>
 
     <ScrollView
