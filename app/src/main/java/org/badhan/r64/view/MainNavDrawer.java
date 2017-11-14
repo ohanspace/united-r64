@@ -15,7 +15,9 @@ import org.badhan.r64.activity.ProfileActivity;
 import org.badhan.r64.activity.message.SentMessagesActivity;
 import org.badhan.r64.activity.trainer.TrainersActivity;
 import org.badhan.r64.core.BaseActivity;
+import org.badhan.r64.entity.Cadre;
 import org.badhan.r64.entity.User;
+import org.badhan.r64.service.profile.CadreDetailsUpdatedEvent;
 import org.badhan.r64.service.profile.UserDetailsUpdatedEvent;
 import org.badhan.r64.view.navDrawer.ActivityNavDrawerItem;
 import org.badhan.r64.view.navDrawer.BasicNavDrawerItem;
@@ -62,5 +64,11 @@ public class MainNavDrawer extends NavDrawer {
         //todo update avatar img
         User user = event.user;
         displayNameView.setText(user.getDisplayName());
+    }
+
+    @Subscribe
+    public void onCadreDetailsUpdated(CadreDetailsUpdatedEvent event){
+        Cadre cadre = event.cadre;
+        displayNameView.setText(cadre.getDisplayName());
     }
 }

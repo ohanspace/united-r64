@@ -19,6 +19,7 @@ import com.squareup.otto.Subscribe;
 import org.badhan.r64.activity.auth.PhoneAuth;
 import org.badhan.r64.core.Auth;
 import org.badhan.r64.core.MyApplication;
+import org.badhan.r64.entity.Cadre;
 import org.badhan.r64.entity.User;
 import org.badhan.r64.service.auth.LoginResponse;
 import org.badhan.r64.service.auth.LoginWithEmail;
@@ -27,6 +28,7 @@ import org.badhan.r64.service.auth.LoginWithLocalToken;
 import org.badhan.r64.service.auth.LoginWithUsername;
 import org.badhan.r64.service.auth.Register;
 import org.badhan.r64.service.auth.RegisterWithExternalProvider;
+import org.badhan.r64.service.profile.CadreDetailsUpdatedEvent;
 import org.badhan.r64.service.profile.ChangeAvatar;
 import org.badhan.r64.service.profile.ChangePassword;
 import org.badhan.r64.service.profile.UpdateProfile;
@@ -42,17 +44,75 @@ public class InMemoryAccountService extends BaseInMemoryService {
     public void updateProfile(final UpdateProfile.Request request){
         final UpdateProfile.Response response = new UpdateProfile.Response();
 
-        invokeDelayed(new Runnable() {
-            @Override
-            public void run() {
-                User user = application.getAuth().getUser();
-                user.setDisplayName(request.displayName);
-                user.setEmail(request.email);
+        String telephone = application.getAuth().getUser().getTelephone();
+        if (telephone.isEmpty()){
+            response.setOperationError("invalid user phone");
+            bus.post(response);
+            return;
+        }
 
-                bus.post(response);
-                bus.post(new UserDetailsUpdatedEvent(user));
-            }
-        }, 1000,1500);
+        final DatabaseReference cadreRef = application.getFirebaseDatabase()
+                .getReference("cadres/" + telephone);
+
+//        cadreRef.addValueEventListener(new ValueEventListener() {
+//            @Override
+//            public void onDataChange(DataSnapshot dataSnapshot) {
+//               response.cadre = dataSnapshot.getValue(Cadre.class);
+//
+//               if (response.cadre != null){
+//                   Log.e("profile update",response.cadre.getName());
+//                   response.cadre.setCadreId(request.getCadreId());
+//                   response.cadre.setName(request.getDisplayName());
+//                   response.cadre.setEmail(request.getEmail());
+//                   response.cadre.setBatch(request.getEmail());
+//                   response.cadre.setHomeDistrict(request.getHomeDistrict());
+//                   response.cadre.setPostingAddress(request.getPostingAddress());
+//                   response.cadre.setBloodGroup(request.getBloodGroup());
+//                   response.cadre.setUniversity(request.getUniversity());
+//                   response.cadre.setSession(request.getSession());
+//
+//                   cadreRef.setValue(response.cadre);
+//                   bus.post(response);
+//                   bus.post(new CadreDetailsUpdatedEvent(response.cadre));
+//               }else {
+//                   response.setOperationError("no cadres found on that telephone");
+//                   bus.post(response);
+//               }
+//            }
+//
+//            @Override
+//            public void onCancelled(DatabaseError databaseError) {
+//
+//            }
+//        });
+        cadreRef.child("cadreId").setValue(request.getCadreId());
+        cadreRef.child("name").setValue(request.getDisplayName());
+        cadreRef.child("email").setValue(request.getEmail());
+        cadreRef.child("batch").setValue(request.getBatch());
+        cadreRef.child("homeDistrict").setValue(request.getHomeDistrict());
+        cadreRef.child("postingAddress").setValue(request.getPostingAddress());
+        cadreRef.child("bloodGroup").setValue(request.getBloodGroup());
+        cadreRef.child("university").setValue(request.getUniversity());
+        cadreRef.child("session").setValue(request.getSession());
+
+        User user = application.getAuth().getUser();
+        user.setDisplayName(request.getDisplayName());
+        bus.post(new UserDetailsUpdatedEvent(user));
+        bus.post(response);
+//
+//        bus.post(response);
+
+//        invokeDelayed(new Runnable() {
+//            @Override
+//            public void run() {
+//                User user = application.getAuth().getUser();
+//                user.setDisplayName(request.displayName);
+//                user.setEmail(request.email);
+//
+//                bus.post(response);
+//                bus.post(new UserDetailsUpdatedEvent(user));
+//            }
+//        }, 1000,1500);
     }
 
 

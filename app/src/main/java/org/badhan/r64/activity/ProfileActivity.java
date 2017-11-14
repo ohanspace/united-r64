@@ -16,6 +16,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
+import android.widget.Toast;
 
 import com.soundcloud.android.crop.Crop;
 import com.squareup.otto.Subscribe;
@@ -24,6 +25,7 @@ import org.badhan.r64.R;
 import org.badhan.r64.core.BaseAuthActivity;
 import org.badhan.r64.dialog.ChangePasswordDialog;
 import org.badhan.r64.entity.User;
+import org.badhan.r64.service.profile.CadreDetailsUpdatedEvent;
 import org.badhan.r64.service.profile.ChangeAvatar;
 import org.badhan.r64.service.profile.UpdateProfile;
 import org.badhan.r64.service.profile.UserDetailsUpdatedEvent;
@@ -46,6 +48,14 @@ public class ProfileActivity extends BaseAuthActivity {
     private int currentState;
     private EditText displayNameField;
     private EditText emailField;
+    private EditText cadreIdField;
+    private EditText batchField;
+    private EditText homeDistrictField;
+    private EditText postingAddressField;
+    private EditText bloodGroupField;
+    private EditText universityField;
+    private EditText sessionField;
+
     private ActionMode editProfileActionMode;
 
     private ImageView avatarImage;
@@ -71,6 +81,14 @@ public class ProfileActivity extends BaseAuthActivity {
         if (savedState == null){
             displayNameField.setText(user.getDisplayName());
             emailField.setText(user.getEmail());
+            cadreIdField.setText(user.getCadreId());
+            batchField.setText(user.getBatch());
+            homeDistrictField.setText(user.getHomeDistrict());
+            postingAddressField.setText(user.getPostingAddress());
+            bloodGroupField.setText(user.getBloodGroup());
+            universityField.setText(user.getUniversity());
+            sessionField.setText(user.getSession());
+
             changeState(STATE_VIEWING);
         }else
             changeState(savedState.getInt(BUNDLE_STATE));
@@ -85,8 +103,16 @@ public class ProfileActivity extends BaseAuthActivity {
         avatarChangeAction = findViewById(R.id.profile_activity_avatarChangeAction);
         avatarChangeProgress = findViewById(R.id.profile_activity_avatarChangeProgressFrame);
         profileUpdatingProgressBar = findViewById(R.id.profile_activity_progressBar);
+
         displayNameField = findViewById(R.id.profile_activity_displayNameField);
         emailField = findViewById(R.id.profile_activity_emailField);
+        cadreIdField = findViewById(R.id.profile_activity_cadreIdField);
+        batchField = findViewById(R.id.profile_activity_batchField);
+        homeDistrictField = findViewById(R.id.profile_activity_homeDistrictField);
+        postingAddressField = findViewById(R.id.profile_activity_postingAddressField);
+        bloodGroupField = findViewById(R.id.profile_activity_bloodGroupField);
+        universityField = findViewById(R.id.profile_activity_universityField);
+        sessionField = findViewById(R.id.profile_activity_session);
 
         avatarChangeProgress.setVisibility(View.GONE);
         profileUpdatingProgressBar.setVisibility(ProgressBar.GONE);
@@ -184,6 +210,7 @@ public class ProfileActivity extends BaseAuthActivity {
         }
         displayNameField.setError(response.getPropertyError("displayName"));
         emailField.setError(response.getPropertyError("email"));
+
         showProgressBar(false);
     }
 
@@ -249,6 +276,15 @@ public class ProfileActivity extends BaseAuthActivity {
         if (state == STATE_VIEWING){
             displayNameField.setEnabled(false);
             emailField.setEnabled(false);
+            batchField.setEnabled(false);
+            cadreIdField.setEnabled(false);
+            homeDistrictField.setEnabled(false);
+            postingAddressField.setEnabled(false);
+            bloodGroupField.setEnabled(false);
+            universityField.setEnabled(false);
+            sessionField.setEnabled(false);
+
+
             avatarChangeAction.setVisibility(View.VISIBLE);
 
             if (editProfileActionMode != null){
@@ -259,6 +295,14 @@ public class ProfileActivity extends BaseAuthActivity {
         }else if (state == STATE_EDITING){
             displayNameField.setEnabled(true);
             emailField.setEnabled(true);
+            batchField.setEnabled(true);
+            cadreIdField.setEnabled(true);
+            homeDistrictField.setEnabled(true);
+            postingAddressField.setEnabled(true);
+            bloodGroupField.setEnabled(true);
+            universityField.setEnabled(true);
+            sessionField.setEnabled(true);
+
             avatarChangeAction.setVisibility(View.GONE);
 
             editProfileActionMode = toolbar.startActionMode(new EditProfileActionCallback());
@@ -284,9 +328,17 @@ public class ProfileActivity extends BaseAuthActivity {
                 showProgressBar(true);
                 changeState(STATE_VIEWING);
 
-                UpdateProfile.Request request =
-                        new UpdateProfile.Request(displayNameField.getText().toString(),
-                                emailField.getText().toString());
+                UpdateProfile.Request request = new UpdateProfile.Request();
+                request.setDisplayName(displayNameField.getText().toString());
+                request.setEmail(emailField.getText().toString());
+                request.setCadreId(cadreIdField.getText().toString());
+                request.setBatch(batchField.getText().toString());
+                request.setHomeDistrict(homeDistrictField.getText().toString());
+                request.setPostingAddress(postingAddressField.getText().toString());
+                request.setBloodGroup(bloodGroupField.getText().toString());
+                request.setUniversity(universityField.getText().toString());
+                request.setSession(sessionField.getText().toString());
+
                 bus.post(request);
 
                 changeState(STATE_VIEWING);
@@ -306,8 +358,9 @@ public class ProfileActivity extends BaseAuthActivity {
 
     @Subscribe
     public void onUserDetailsUpdated(UserDetailsUpdatedEvent event){
-        Log.e("profile user updated",event.user.getDisplayName());
+        Toast.makeText(this, "Profile update successful", Toast.LENGTH_SHORT).show();
         getSupportActionBar().setTitle(event.user.getDisplayName());
     }
+
    
 }
