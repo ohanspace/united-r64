@@ -107,14 +107,14 @@ public class CadreActivity extends BaseAuthActivity implements View.OnClickListe
             public void onSuccess(Uri uri) {
                 Picasso.with(CadreActivity.this)
                         .load(uri.toString())
-                        .placeholder(R.drawable.ic_action_profile)
-                        .error(R.drawable.ic_action_profile)
+                        .placeholder(R.drawable.ic_person_pin_round)
+                        .error(R.drawable.ic_person_pin_round)
                         .into(avatar);
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
-                avatar.setImageResource(R.drawable.ic_action_profile);
+                avatar.setImageResource(R.drawable.ic_person_pin_round);
             }
         });
 
