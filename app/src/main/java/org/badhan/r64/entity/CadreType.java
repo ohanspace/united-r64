@@ -4,6 +4,8 @@ import android.graphics.Color;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import org.badhan.r64.factory.CadreTypeFactory;
+
 import java.util.ArrayList;
 
 public final class CadreType implements Parcelable{
@@ -24,6 +26,8 @@ public final class CadreType implements Parcelable{
         parcel.writeString(color);
 
     }
+
+    public CadreType(){}
 
     public CadreType(String key, String displayName) {
         this.key = key;
@@ -49,20 +53,7 @@ public final class CadreType implements Parcelable{
     }
 
     public static ArrayList<CadreType> getAllTypes(){
-        ArrayList<CadreType> types = new ArrayList<CadreType>();
-
-        types.add(new CadreType("ADMINISTRATION", "BCS (Administration)","#9575CD"));
-        types.add(new CadreType("AGRICULTURE", "BCS (Agriculture)","#42A5F5"));
-        types.add(new CadreType("ECONOMIC", "BCS (Economic)","#0097A7"));
-        types.add(new CadreType("FISHERIES", "BCS (Fisheries)","#009688"));
-        types.add(new CadreType("INFORMATION", "BCS (Information)","#FF8A65"));
-        types.add(new CadreType("JUDICIAL_SERVICE", "Bangladesh Judicial Service","#8BC34A"));
-        types.add(new CadreType("LIVESTOCK", "BCS (Livestock)","#1DE9B6"));
-        types.add(new CadreType("POLICE", "BCS (Police)","#F06292"));
-        types.add(new CadreType("PUBLIC_WORKS", "BCS (Public Works)","#FF5252"));
-        types.add(new CadreType("TAXATION", "BCS (Taxation)","#9C27B0"));
-
-        return types;
+        return CadreTypeFactory.getInstance().getAllTypes();
     }
 
     @Override

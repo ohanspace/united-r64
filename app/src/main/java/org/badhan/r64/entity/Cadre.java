@@ -7,6 +7,8 @@ import android.util.Log;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
+import org.badhan.r64.factory.CadreTypeFactory;
+
 public class Cadre implements Parcelable{
     private int id;
     private String group;
@@ -89,7 +91,8 @@ public class Cadre implements Parcelable{
 
 
     public String getCadreBatchType(){
-        return batch + " th BCS" + " ("+cadreType.toLowerCase()+")";
+        return batch + " th " +
+                CadreTypeFactory.getInstance().getByKey(getCadreType()).getDisplayName();
     }
 
     public int getId() {
