@@ -45,9 +45,12 @@ public class MainNavDrawer extends NavDrawer {
         addItem(new ActivityNavDrawerItem(MainActivity.class,
                 "Home", R.drawable.ic_action_home,
                 null, R.id.include_main_nav_drawer_topItems));
-        addItem(new ActivityNavDrawerItem(ProfileActivity.class,
-                "My Profile", R.drawable.ic_action_profile,
-                null, R.id.include_main_nav_drawer_topItems));
+
+        if (!activity.application.getAuth().getUser().isGuest()){
+            addItem(new ActivityNavDrawerItem(ProfileActivity.class,
+                    "My Profile", R.drawable.ic_action_profile,
+                    null, R.id.include_main_nav_drawer_topItems));
+         }
         addItem(new ActivityNavDrawerItem(CadresActivity.class,
                 "All Cadres", R.drawable.ic_action_local_library,
                 "94", R.id.include_main_nav_drawer_topItems));

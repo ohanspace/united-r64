@@ -25,6 +25,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.ValueEventListener;
 
 import org.badhan.r64.R;
+import org.badhan.r64.activity.MainActivity;
 import org.badhan.r64.activity.ProfileActivity;
 import org.badhan.r64.core.Auth;
 import org.badhan.r64.core.BaseActivity;
@@ -40,6 +41,7 @@ public class PhoneAuth extends BaseActivity implements View.OnClickListener {
     private EditText telephoneField;
     private EditText codeField;
     private Button loginBtn;
+    private Button guestLoginBtn;
     private Button resendBtn;
     private Button verifyCodeBtn;
     private View progressBarFrame;
@@ -64,8 +66,11 @@ public class PhoneAuth extends BaseActivity implements View.OnClickListener {
         resendBtn = findViewById(R.id.phone_auth_activity_resendBtn);
         verifyCodeBtn = findViewById(R.id.phone_auth_activity_verifyCodeBtn);
         progressBarFrame = findViewById(R.id.phone_auth_activity_progressBarFrame);
+        guestLoginBtn = findViewById(R.id.phone_auth_activity_guestLoginBtn);
 
         loginBtn.setOnClickListener(this);
+        guestLoginBtn.setOnClickListener(this);
+
         verifyCodeBtn.setVisibility(View.GONE);
         resendBtn.setVisibility(View.GONE);
 
@@ -86,7 +91,20 @@ public class PhoneAuth extends BaseActivity implements View.OnClickListener {
                 showProgressBar();
                 resendCode();
                 break;
+            case R.id.phone_auth_activity_guestLoginBtn:
+                guestLogin();
         }
+    }
+
+    private void guestLogin(){
+        User user = application.getAuth().getUser();
+        user.setDisplayName("Guest User");
+        user.setGuest(true);
+        user.setLoggedIn(true);
+
+        Intent intent = new Intent(this, MainActivity.class);
+        startActivity(intent);
+        finish();
     }
 
     private void sendCode(){
