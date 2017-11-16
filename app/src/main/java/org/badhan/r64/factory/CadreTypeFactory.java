@@ -40,7 +40,7 @@ public class CadreTypeFactory {
         types.add(new CadreType("ECONOMIC", "BCS (Economic)","#0097A7"));
         types.add(new CadreType("FISHERIES", "BCS (Fisheries)","#009688"));
         types.add(new CadreType("INFORMATION", "BCS (Information)","#FF8A65"));
-        types.add(new CadreType("JUDICIAL_SERVICE", "Bangladesh Judicial Service","#8BC34A"));
+        types.add(new CadreType("JUDICIAL_SERVICE", "(Bangladesh Judicial Service)","#8BC34A"));
         types.add(new CadreType("LIVESTOCK", "BCS (Livestock)","#1DE9B6"));
         types.add(new CadreType("POLICE", "BCS (Police)","#F06292"));
         types.add(new CadreType("PUBLIC_WORKS", "BCS (Public Works)","#FF5252"));

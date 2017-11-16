@@ -69,6 +69,7 @@ public class PhoneAuth extends BaseActivity implements View.OnClickListener {
         guestLoginBtn = findViewById(R.id.phone_auth_activity_guestLoginBtn);
 
         loginBtn.setOnClickListener(this);
+        verifyCodeBtn.setOnClickListener(this);
         guestLoginBtn.setOnClickListener(this);
 
         verifyCodeBtn.setVisibility(View.GONE);
