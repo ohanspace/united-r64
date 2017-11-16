@@ -36,6 +36,12 @@ public class CadreViewHolder extends RecyclerView.ViewHolder {
     public void populate(final Context context, Cadre cadre){
         itemView.setTag(cadre);
 
+        displayName.setText(cadre.getDisplayName());
+        cadreBatchType.setText(cadre.getCadreBatchType());
+        postingAddress.setText(cadre.getPostingAddress());
+
+        avatar.setImageResource(R.drawable.ic_action_profile);
+
         cadre.getAvatarStorageRef().getDownloadUrl()
                 .addOnSuccessListener(new OnSuccessListener<Uri>() {
                     @Override
@@ -55,9 +61,6 @@ public class CadreViewHolder extends RecyclerView.ViewHolder {
                 });
 
 
-        displayName.setText(cadre.getDisplayName());
-        cadreBatchType.setText(cadre.getCadreBatchType());
-        postingAddress.setText(cadre.getPostingAddress());
 
     }
 }
