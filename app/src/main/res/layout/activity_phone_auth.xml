@@ -63,8 +63,8 @@
         <Button
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Login"
-            android:background="@color/colorPrimaryDark"
+            android:text="Guest Login"
+            android:background="@color/colorAccent"
             android:textColor="@color/colorWhite"
             android:textStyle="bold"
             android:id="@+id/phone_auth_activity_guestLoginBtn"

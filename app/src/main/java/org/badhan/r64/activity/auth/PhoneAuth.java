@@ -102,6 +102,7 @@ public class PhoneAuth extends BaseActivity implements View.OnClickListener {
         user.setGuest(true);
         user.setLoggedIn(true);
 
+        bus.post(new UserDetailsUpdatedEvent(user));
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
         finish();
@@ -193,6 +194,7 @@ public class PhoneAuth extends BaseActivity implements View.OnClickListener {
                     resendBtn.setEnabled(true);
                     loginBtn.setEnabled(false);
                     loginBtn.setVisibility(View.GONE);
+                    guestLoginBtn.setVisibility(View.GONE);
                 }
 
                 @Override
