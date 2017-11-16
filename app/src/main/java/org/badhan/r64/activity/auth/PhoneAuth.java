@@ -99,6 +99,8 @@ public class PhoneAuth extends BaseActivity implements View.OnClickListener {
     private void guestLogin(){
         User user = application.getAuth().getUser();
         user.setDisplayName("Guest User");
+        user.setTelephone(" ");
+        user.setAvatarUrl(" ");
         user.setGuest(true);
         user.setLoggedIn(true);
 
@@ -265,6 +267,7 @@ public class PhoneAuth extends BaseActivity implements View.OnClickListener {
 
         //user.setAvatarUrl("https://en.gravatar.com/avatar/1");
         user.setLoggedIn(true);
+        user.setGuest(false);
         auth.setAuthToken(attemptedUser.getTelephone());
 
         bus.post(new UserDetailsUpdatedEvent(user));
