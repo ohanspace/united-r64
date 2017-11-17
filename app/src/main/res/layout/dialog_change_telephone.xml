@@ -11,6 +11,22 @@
         android:layout_height="wrap_content"
         android:hint="New telephone"
         android:layout_marginBottom="16dp"
+        android:inputType="phone"
         android:lines="1"
-        android:id="@+id/dialog_change_password_newTelephone"/>
+        android:id="@+id/change_telephone_dialog_newTelephoneField"/>
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="verification code"
+        android:id="@+id/change_telephone_dialog_codeField"/>
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Verify"
+        android:id="@+id/change_telephone_dialog_verifyCodeBtn"/>
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="resend"
+        android:id="@+id/change_telephone_dialog_resendBtn"/>
 </LinearLayout>

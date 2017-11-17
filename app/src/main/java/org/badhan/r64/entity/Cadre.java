@@ -4,11 +4,14 @@ import android.os.Parcel;
 import android.os.Parcelable;
 import android.util.Log;
 
+import com.google.firebase.database.Exclude;
+import com.google.firebase.database.IgnoreExtraProperties;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
 import org.badhan.r64.factory.CadreTypeFactory;
 
+@IgnoreExtraProperties
 public class Cadre implements Parcelable{
     private int id;
     private String group;
@@ -71,6 +74,7 @@ public class Cadre implements Parcelable{
         parcel.writeString(avatarUrl);
     }
 
+    @Exclude
     public String getSearchableText(){
         return getName()+ "," +
                 getBatch() +"th batch" +
@@ -80,6 +84,7 @@ public class Cadre implements Parcelable{
                 getPostingAddress();
     }
 
+    @Exclude
     public StorageReference getAvatarStorageRef(){
         if (getAvatarUri() == null){
             setAvatarUrl("fakeUri"); // for avoiding illegal reference error
@@ -90,6 +95,7 @@ public class Cadre implements Parcelable{
     }
 
 
+    @Exclude
     public String getCadreBatchType(){
         return batch + " th " +
                 CadreTypeFactory.getInstance().getByKey(getCadreType()).getDisplayName();
@@ -142,10 +148,13 @@ public class Cadre implements Parcelable{
     public void setName(String name){
         this.name = name;
     }
+
+    @Exclude
     public String getDisplayName() {
         return name;
     }
 
+    @Exclude
     public void setDisplayName(String displayName) {
         this.name = displayName;
     }
@@ -222,9 +231,11 @@ public class Cadre implements Parcelable{
         this.group = group;
     }
 
+    @Exclude
     public String getAvatarUri(){
         return avatarUrl;
     }
+
     public String getAvatarUrl() {
         return avatarUrl;
     }
