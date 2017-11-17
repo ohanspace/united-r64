@@ -1,5 +1,8 @@
 package org.badhan.r64.entity;
 
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+
 public class Trainer {
     private int id;
     private String name;
@@ -8,6 +11,12 @@ public class Trainer {
     private String telephone;
     private String email;
     private String alphabet;
+
+    public StorageReference getAvatarRef(){
+        return FirebaseStorage.getInstance()
+                .getReference("cmtAvatars")
+                .child(Integer.toString(getId()) + ".jpg");
+    }
 
     public String getAlphabet() {
         return alphabet;

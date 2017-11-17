@@ -12,19 +12,21 @@
         android:layout_height="match_parent"
         android:padding="3dp">
 
-        <TextView
+        <ImageView
             android:layout_width="64dp"
             android:layout_height="64dp"
             android:scaleType="fitXY"
             android:text="C"
             android:gravity="center"
             android:textSize="24dp"
-            android:id="@+id/trainer_list_item_alphabet"
+            android:src="@drawable/ic_action_profile"
+            android:id="@+id/trainer_list_item_avatar"
             android:layout_marginEnd="16dp"/>
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_toEndOf="@id/trainer_list_item_alphabet"
+            android:layout_toEndOf="@id/trainer_list_item_avatar"
             android:textSize="16sp"
             android:text="Chy Raihan Evna Sultan"
             android:textColor="#de000000"
@@ -35,7 +37,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Director General"
-            android:layout_toEndOf="@id/trainer_list_item_alphabet"
+            android:layout_toEndOf="@id/trainer_list_item_avatar"
             android:layout_below="@id/trainer_list_item_displayName"
             android:textColor="#333"
             android:id="@+id/trainer_list_item_designation"/>
@@ -43,7 +45,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Chief Adviser"
-            android:layout_toEndOf="@id/trainer_list_item_alphabet"
+            android:layout_toEndOf="@id/trainer_list_item_avatar"
             android:layout_below="@id/trainer_list_item_designation"
             android:id="@+id/trainer_list_item_trainingPost"/>
 
@@ -52,7 +54,7 @@
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:layout_marginLeft="30dp"
-            android:layout_alignTop="@id/trainer_list_item_alphabet">
+            android:layout_alignTop="@id/trainer_list_item_avatar">
             <ImageButton
                 android:layout_width="40dp"
                 android:layout_height="30dp"
