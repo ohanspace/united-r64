@@ -120,7 +120,7 @@ public class PhoneAuth extends BaseActivity implements View.OnClickListener {
         DatabaseReference userRef = application.getFirebaseDatabase()
                 .getReference("cadres/"+telephoneString);
 
-        userRef.addValueEventListener(new ValueEventListener() {
+        userRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 attemptedUser = dataSnapshot.getValue(User.class);
