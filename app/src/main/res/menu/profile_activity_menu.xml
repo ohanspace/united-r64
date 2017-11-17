@@ -12,7 +12,7 @@
         <!--android:id="@+id/profile_activity_menu_change_password"/>-->
     <item
         android:title="change telephpne"
-        android:icon="@drawable/ic_action_call"
+        android:icon="@drawable/ic_action_phone_locked"
         app:showAsAction="always"
         android:id="@+id/profile_activity_change_telephone"/>
 </menu>

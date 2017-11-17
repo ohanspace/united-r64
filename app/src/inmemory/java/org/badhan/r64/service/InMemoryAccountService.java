@@ -196,7 +196,7 @@ public class InMemoryAccountService extends BaseInMemoryService {
         //Log.e("locatl token", telephone);
         DatabaseReference cadreRef = application.getFirebaseDatabase()
                 .getReference("cadres/"+telephone);
-        cadreRef.addValueEventListener(new ValueEventListener() {
+        cadreRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 User attemptedUser = dataSnapshot.getValue(User.class);

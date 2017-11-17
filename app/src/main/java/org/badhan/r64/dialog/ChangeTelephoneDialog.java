@@ -142,6 +142,7 @@ public class ChangeTelephoneDialog extends BaseDialogFragment implements View.On
 
                         codeField.setVisibility(View.VISIBLE);
                         verifyCodeBtn.setVisibility(View.VISIBLE);
+                        resendBtn.setVisibility(View.VISIBLE);
 
                         newTelephoneField.setEnabled(false);
                         verifyCodeBtn.setEnabled(true);
