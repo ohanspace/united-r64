@@ -30,6 +30,7 @@ import com.squareup.picasso.Picasso;
 import org.badhan.r64.R;
 import org.badhan.r64.core.BaseAuthActivity;
 import org.badhan.r64.dialog.ChangePasswordDialog;
+import org.badhan.r64.dialog.ChangeTelephoneDialog;
 import org.badhan.r64.entity.User;
 import org.badhan.r64.service.profile.ChangeAvatar;
 import org.badhan.r64.service.profile.UpdateProfile;
@@ -346,11 +347,23 @@ public class ProfileActivity extends BaseAuthActivity {
             changeState(STATE_EDITING);
             return true;
         }
-        else if (item.getItemId() == R.id.profile_activity_menu_change_password){
-            showChangePasswordDialog();
+//        else if (item.getItemId() == R.id.profile_activity_menu_change_password){
+//            showChangePasswordDialog();
+//            return true;
+//        }
+        else if (item.getItemId() == R.id.profile_activity_change_telephone){
+            showChangeTelephoneDialog();
             return true;
         }
         return false;
+    }
+
+    private void showChangeTelephoneDialog(){
+        FragmentTransaction transaction = getFragmentManager()
+                .beginTransaction()
+                .addToBackStack(null);
+        ChangeTelephoneDialog dialog = new ChangeTelephoneDialog();
+        dialog.show(transaction, null);
     }
 
     private void showChangePasswordDialog() {
